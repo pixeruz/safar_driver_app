@@ -11,5 +11,7 @@ export function Text({ ...props }) {
 }
 
 const defaultStyles = StyleSheet.create({
-	defaultTextStyles: {},
+	defaultTextStyles: {
+		fontFamily: "Inter-Regular",
+	},
 });
