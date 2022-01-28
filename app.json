@@ -27,11 +27,6 @@
 		"web": {
 			"favicon": "./assets/favicon.png"
 		},
-		"plugins": [
-			"expo-image-picker",
-			{
-				"photosPermission": "Guvohnomani tasdiqlash uchun ruxsat bering!"
-			}
-		]
+		"plugins": ["expo-image-picker"]
 	}
 }

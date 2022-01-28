@@ -2,10 +2,27 @@ import React from "react";
 import { View, StyleSheet, Image, Dimensions } from "react-native";
 import { Button, Container, Input, Text } from "../components/styledComponents";
 import PlusCircle from "../images/PlusCircle";
+import * as ImagePicker from "expo-image-picker";
 
 const { width, height } = Dimensions.get("screen");
 
 export default function SubmitPhotoScreen({ navigation }) {
+	const [carPhoto, setCarPhoto] = React.useState();
+
+	const pickCarPhoto = async () => {
+		// No permissions request is necessary for launching the image library
+		let result = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.Images,
+			allowsEditing: true,
+			aspect: [4, 3],
+			quality: 1,
+		});
+
+		if (!result.cancelled) {
+			setCarPhoto(result.uri);
+		}
+	};
+
 	return (
 		<Container>
 			<Text medium style={styles.subtitle}>
@@ -20,40 +37,52 @@ export default function SubmitPhotoScreen({ navigation }) {
 				rasmga oling
 			</Text>
 
-			<View style={styles.images}>
-				<Image
-					width={"47%"}
-					resizeMethod="resize"
-					resizeMode="contain"
-					style={styles.carImage}
-					source={require("../images/sample_correct_car.jpg")}
-				/>
-				<Image
-					width={"47%"}
-					resizeMethod="resize"
-					resizeMode="contain"
-					style={styles.carImage}
-					source={require("../images/sample_incorrect_car.jpg")}
-				/>
-			</View>
+			{!carPhoto && (
+				<>
+					<View style={styles.images}>
+						<Image
+							width={"47%"}
+							resizeMethod="resize"
+							resizeMode="contain"
+							style={styles.carImage}
+							source={require("../images/sample_correct_car.jpg")}
+						/>
+						<Image
+							width={"47%"}
+							resizeMethod="resize"
+							resizeMode="contain"
+							style={styles.carImage}
+							source={require("../images/sample_incorrect_car.jpg")}
+						/>
+					</View>
 
-			<Button style={styles.upload}>
-				<Text style={styles.uploadText} bold>
-					Yuklash
-				</Text>
-				<PlusCircle />
-			</Button>
+					<Button onPress={pickCarPhoto} style={styles.upload}>
+						<Text style={styles.uploadText} bold>
+							Yuklash
+						</Text>
+						<PlusCircle />
+					</Button>
+				</>
+			)}
 
-			{/* <Button style={styles.selectIdButton}>
-				<Image
-					source={require("../images/noid.png")}
-					style={styles.idPhoto}
-				/>
-				<Text semiBold>Guvohnoma orqa tomoni</Text>
-				<Text style={styles.idPhotoEditText} medium>
-					O'zgartirish
-				</Text>
-			</Button> */}
+			{carPhoto && (
+				<Button style={styles.selectIdButton}>
+					<Image
+						source={{
+							uri: carPhoto,
+						}}
+						style={styles.idPhoto}
+					/>
+					<Text semiBold>Mashinaning rasmi</Text>
+					<Text
+						onPress={pickCarPhoto}
+						style={styles.idPhotoEditText}
+						medium
+					>
+						O'zgartirish
+					</Text>
+				</Button>
+			)}
 
 			<Button style={styles.submitButton}>
 				<Text bold light>
@@ -91,6 +120,7 @@ const styles = StyleSheet.create({
 		width: 46,
 		height: 46,
 		marginRight: 15,
+		borderRadius: 8,
 	},
 	selectIdButton: {
 		justifyContent: "flex-start",
