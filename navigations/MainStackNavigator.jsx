@@ -2,6 +2,7 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Onboardingscreen from "../screens/OnBoardingScreen";
 import LoginScreen from "../screens/LoginScreen";
+import OTPScreen from "../screens/OTPScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,13 @@ function MainStackNavigator() {
 					headerShown: false,
 				}}
 				component={LoginScreen}
+			/>
+			<Stack.Screen
+				name="OTPScreen"
+				options={{
+					headerShown: false,
+				}}
+				component={OTPScreen}
 			/>
 		</Stack.Navigator>
 	);
