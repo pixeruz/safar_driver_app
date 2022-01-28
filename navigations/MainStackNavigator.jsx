@@ -8,6 +8,7 @@ import MainStackNavigatorHeader from "../components/MainStackNavigatorHeader";
 import CustomRegistrationNavigator from "./CustomRegistrationNavigator";
 import WaitStatusScreen from "../screens/WaitStatusScreen";
 import MainBottomBarNavigator from "./MainBottomBarNavigator";
+import TripDetailScreen from "../screens/TripDetailScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +20,8 @@ function MainStackNavigator() {
 					backgroundColor: "#fff",
 				},
 				animation: "slide_from_right",
+				gestureEnabled: true,
+				gestureDirection: "horizontal",
 			}}
 			initialRouteName="TabBarNavigator"
 		>
@@ -65,6 +68,13 @@ function MainStackNavigator() {
 					headerShown: false,
 				}}
 				component={MainBottomBarNavigator}
+			/>
+			<Stack.Screen
+				name="TripDetailScreen"
+				options={{
+					headerShown: false,
+				}}
+				component={TripDetailScreen}
 			/>
 		</Stack.Navigator>
 	);

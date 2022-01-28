@@ -22,7 +22,7 @@ export default function HomeScreen({ navigation }) {
 					Yaratish
 				</Text>
 			</Button>
-			<TripsSectionedList />
+			<TripsSectionedList navigation={navigation} />
 		</Container>
 	);
 }

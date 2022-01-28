@@ -1,4 +1,10 @@
-import { View, SectionList, StyleSheet, StatusBar } from "react-native";
+import {
+	View,
+	SectionList,
+	StyleSheet,
+	StatusBar,
+	Pressable,
+} from "react-native";
 import React from "react";
 import { Text } from "./styledComponents";
 import ArrowIcon from "../images/ArrowIcon";
@@ -22,8 +28,11 @@ const DATA = [
 	},
 ];
 
-const Item = ({ index }) => (
-	<View style={styles.item}>
+const Item = ({ index, navigation }) => (
+	<Pressable
+		onPress={() => navigation.navigate("TripDetailScreen")}
+		style={styles.item}
+	>
 		<View>
 			<View style={styles.cityWrapper}>
 				<Text style={styles.cityFirstName} semiBold>
@@ -46,10 +55,10 @@ const Item = ({ index }) => (
 		<Text style={styles.statusActive} medium>
 			Aktiv
 		</Text>
-	</View>
+	</Pressable>
 );
 
-export default function TripsSectionedList() {
+export default function TripsSectionedList({ navigation }) {
 	return (
 		<SectionList
 			sections={DATA}
@@ -63,7 +72,7 @@ export default function TripsSectionedList() {
 			}) => {
 				return (
 					<View>
-						<Item title={item} />
+						<Item navigation={navigation} title={item} />
 						{index !== dataLength - 1 && (
 							<View style={styles.pale} />
 						)}
