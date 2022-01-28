@@ -5,6 +5,7 @@ import LoginScreen from "../screens/LoginScreen";
 import OTPScreen from "../screens/OTPScreen";
 import RegistrationScreen from "../screens/RegistrationScreen";
 import MainStackNavigatorHeader from "../components/MainStackNavigatorHeader";
+import CustomRegistrationNavigator from "./CustomRegistrationNavigator";
 
 const Stack = createNativeStackNavigator();
 
@@ -45,7 +46,7 @@ function MainStackNavigator() {
 					header: MainStackNavigatorHeader,
 					title: "Ro'yxatdan o'tish",
 				}}
-				component={RegistrationScreen}
+				component={CustomRegistrationNavigator}
 			/>
 		</Stack.Navigator>
 	);
