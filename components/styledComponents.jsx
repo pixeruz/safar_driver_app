@@ -4,6 +4,7 @@ import {
 	StyleSheet,
 	View,
 	Pressable,
+	TextInput,
 } from "react-native";
 
 export function Text({ ...props }) {
@@ -60,6 +61,19 @@ export function Button({ ...props }) {
 	);
 }
 
+export function Input({ ...props }) {
+	return (
+		<TextInput
+			placeholderTextColor={"#222222"}
+			{...props}
+			style={{
+				...defaultStyles.defaultInputStyles,
+				...props.style,
+			}}
+		/>
+	);
+}
+
 const defaultStyles = StyleSheet.create({
 	defaultTextStyles: {},
 	defaultContainerStyles: {
@@ -72,5 +86,12 @@ const defaultStyles = StyleSheet.create({
 		marginVertical: 5,
 		justifyContent: "center",
 		alignItems: "center",
+	},
+	defaultInputStyles: {
+		padding: 14,
+		borderColor: "#DFE4E9",
+		borderWidth: 1,
+		borderRadius: 6,
+		marginVertical: 6,
 	},
 });

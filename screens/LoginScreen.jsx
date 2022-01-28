@@ -1,32 +1,33 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { Button, Container, Text } from "../components/styledComponents";
+import { Button, Container, Input, Text } from "../components/styledComponents";
 import Logo from "../images/Logo";
 
-export default function Onboardingscreen({ navigation }) {
+export default function LoginScreen() {
 	return (
 		<Container>
 			<View style={styles.logoView}>
 				<Logo />
 			</View>
 			<Text bold style={styles.title}>
-				Ketdikmi?
+				Kirish
 			</Text>
 			<Text medium style={styles.subtitle}>
-				Safar Driver ilovasini yuklaganingiz uchun rahmat! Ishga tushish
-				uchun ro’yxatdan o’tishingiz kerak!
+				Davom ettirish uchun raqamingizni kiriting
 			</Text>
-			<View style={styles.space}></View>
+			<View style={styles.phoneInputView}>
+				<Text medium style={styles.phoneInputViewLabel}>
+					Telefon raqamingiz:
+				</Text>
+				<Input value="+998" placeholder="Telefon raqam" />
+			</View>
 			<Button style={styles.signUpButton}>
 				<Text bold light>
-					Ro’yxatdan o’tish
+					Davom ettirish
 				</Text>
 			</Button>
-			<Button
-				onPress={() => navigation.navigate("LoginScreen")}
-				style={styles.loginButton}
-			>
-				<Text semiBold>Kirish</Text>
+			<Button style={styles.loginButton}>
+				<Text semiBold>Akkountingiz yo'qmi?</Text>
 			</Button>
 		</Container>
 	);
@@ -34,7 +35,6 @@ export default function Onboardingscreen({ navigation }) {
 
 const styles = StyleSheet.create({
 	logoView: {
-		alignItems: "center",
 		marginTop: 10,
 		marginBottom: 30,
 	},
@@ -58,5 +58,12 @@ const styles = StyleSheet.create({
 	},
 	loginButton: {
 		backgroundColor: "#DFE4E9",
+	},
+	phoneInputView: {
+		marginVertical: 20,
+	},
+	phoneInputViewLabel: {
+		fontSize: 14,
+		color: "#222222",
 	},
 });
