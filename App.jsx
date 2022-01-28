@@ -1,24 +1,18 @@
+import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import PreventSplashScreen from "./components/PreventSplashScreen";
-import { Text } from "./components/styledComponents";
+import MainStackNavigator from "./navigations/MainStackNavigator";
 
 export default function App() {
 	return (
 		<PreventSplashScreen>
-			<View style={styles.container}>
-				<Text>Test</Text>
-				<StatusBar style="auto" />
-			</View>
+			<NavigationContainer>
+				<SafeAreaView style={{ flex: 1 }}>
+					<StatusBar style="auto" />
+					<MainStackNavigator />
+				</SafeAreaView>
+			</NavigationContainer>
 		</PreventSplashScreen>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "#fff",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-});
