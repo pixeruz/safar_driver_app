@@ -7,7 +7,13 @@ const Stack = createNativeStackNavigator();
 
 function MainStackNavigator() {
 	return (
-		<Stack.Navigator>
+		<Stack.Navigator
+			screenOptions={{
+				contentStyle: {
+					backgroundColor: "#fff",
+				},
+			}}
+		>
 			<Stack.Screen
 				name="OnBoarding"
 				options={{

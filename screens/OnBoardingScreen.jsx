@@ -1,18 +1,22 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Text } from "../components/styledComponents";
+import { Container, Text } from "../components/styledComponents";
+import Logo from "../images/Logo";
 
 export default function Onboardingscreen() {
 	return (
-		<View style={styles.container}>
-			<Text>test</Text>
-		</View>
+		<Container>
+			<View style={styles.logoView}>
+				<Logo />
+			</View>
+		</Container>
 	);
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
+	logoView: {
+		alignItems: "center",
+		marginTop: 10,
 	},
 });
