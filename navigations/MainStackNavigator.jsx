@@ -20,6 +20,7 @@ function MainStackNavigator() {
 				},
 				animation: "slide_from_right",
 			}}
+			initialRouteName="TabBarNavigator"
 		>
 			<Stack.Screen
 				name="OnBoardingScreen"
