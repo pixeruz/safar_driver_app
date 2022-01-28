@@ -3,6 +3,7 @@ import { View, StyleSheet } from "react-native";
 import MainHeaderUserProfile from "../components/MainHeaderUserProfile";
 import Pale from "../components/Pale";
 import { Button, Container, Text } from "../components/styledComponents";
+import TripsSectionedList from "../components/TripsSectionedList";
 import PlusIcon from "../images/Plus";
 
 export default function HomeScreen({ navigation }) {
@@ -21,6 +22,7 @@ export default function HomeScreen({ navigation }) {
 					Yaratish
 				</Text>
 			</Button>
+			<TripsSectionedList />
 		</Container>
 	);
 }
@@ -45,6 +47,7 @@ const styles = StyleSheet.create({
 		bottom: 15,
 		right: 20,
 		borderRadius: 30,
+		zIndex: 3,
 	},
 	create: {
 		color: "#ffffff",
