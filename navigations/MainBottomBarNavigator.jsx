@@ -24,6 +24,9 @@ export default function MainBottomBarNavigator() {
 					fontSize: 13,
 				},
 			}}
+			sceneContainerStyle={{
+				backgroundColor: "#ffffff",
+			}}
 		>
 			<Tab.Screen
 				name="HomeScreen"
