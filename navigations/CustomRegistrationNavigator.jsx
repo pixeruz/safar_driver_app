@@ -1,37 +1,43 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
-import PagerView from "react-native-pager-view";
-import RegistrationOTPScreen from "../screens/RegistrationOTPScreen";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import RegistrationScreen from "../screens/RegistrationScreen";
+import RegistrationOTPScreen from "../screens/RegistrationOTPScreen";
+import SubmitIdScreen from "../screens/SubmitIdScreen";
 
-export default function CustomRegistrationNavigator({ navigation }) {
-	const ViewPagerRef = React.useRef();
+const Stack = createNativeStackNavigator();
 
+function RegistrationNavigator() {
 	return (
-		<View style={styles.container}>
-			<PagerView
-				scrollEnabled={false}
-				ref={ViewPagerRef}
-				style={styles.container}
-				initialPage={0}
-			>
-				<RegistrationScreen
-					pager={ViewPagerRef.current}
-					navigation={navigation}
-					key="1"
-				/>
-				<RegistrationOTPScreen
-					pager={ViewPagerRef.current}
-					navigation={navigation}
-					key="2"
-				/>
-			</PagerView>
-		</View>
+		<Stack.Navigator
+			screenOptions={{
+				contentStyle: {
+					backgroundColor: "#fff",
+				},
+			}}
+		>
+			<Stack.Screen
+				name="RegistrationSecondScreen"
+				options={{
+					headerShown: false,
+				}}
+				component={RegistrationScreen}
+			/>
+			<Stack.Screen
+				name="RegistrationOTPScreen"
+				options={{
+					headerShown: false,
+				}}
+				component={RegistrationOTPScreen}
+			/>
+			<Stack.Screen
+				name="SubmitIdScreen"
+				options={{
+					headerShown: false,
+				}}
+				component={SubmitIdScreen}
+			/>
+		</Stack.Navigator>
 	);
 }
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-});
+export default RegistrationNavigator;

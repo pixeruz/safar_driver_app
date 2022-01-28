@@ -3,7 +3,7 @@ import { View, StyleSheet } from "react-native";
 import { Button, Container, Input, Text } from "../components/styledComponents";
 import Logo from "../images/Logo";
 
-export default function RegistrationOTPScreen({ pager }) {
+export default function RegistrationOTPScreen({ navigation }) {
 	return (
 		<Container>
 			<Text medium style={styles.subtitle}>
@@ -23,13 +23,16 @@ export default function RegistrationOTPScreen({ pager }) {
 				</Text>
 				<Input value="000000" placeholder="Telefon raqam" />
 			</View>
-			<Button style={styles.submitButton}>
+			<Button
+				onPress={() => navigation.navigate("SubmitIdScreen")}
+				style={styles.submitButton}
+			>
 				<Text bold light>
 					Davom ettirish
 				</Text>
 			</Button>
 			<Button
-				onPress={() => pager.setPage(0)}
+				onPress={() => navigation.goBack()}
 				style={styles.resendButton}
 			>
 				<Text semiBold>Notog’ri raqam terdingizmi?</Text>

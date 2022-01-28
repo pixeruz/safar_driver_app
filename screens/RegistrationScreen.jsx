@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import { Button, Container, Input, Text } from "../components/styledComponents";
 
-export default function RegistrationScreen({ pager, navigation }) {
+export default function RegistrationScreen({ navigation }) {
 	return (
 		<Container>
 			<Text medium style={styles.subtitle}>
@@ -18,7 +18,7 @@ export default function RegistrationScreen({ pager, navigation }) {
 				<Input value="+998" placeholder="Telefon raqam" />
 			</View>
 			<Button
-				onPress={() => pager?.setPage(1)}
+				onPress={() => navigation.navigate("RegistrationOTPScreen")}
 				style={styles.signUpButton}
 			>
 				<Text bold light>
