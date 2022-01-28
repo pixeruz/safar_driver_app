@@ -1,8 +1,40 @@
 import React from "react";
 import { View, StyleSheet, Image } from "react-native";
 import { Button, Container, Input, Text } from "../components/styledComponents";
+import * as ImagePicker from "expo-image-picker";
 
 export default function SubmitIdScreen({ navigation }) {
+	const [photoOfFrontOfId, setPhotoOfFrontOfId] = React.useState();
+	const [photoOfBackOfId, setPhotoOfBackOfId] = React.useState();
+
+	const pickFrontOfId = async () => {
+		// No permissions request is necessary for launching the image library
+		let result = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.Images,
+			allowsEditing: true,
+			aspect: [4, 3],
+			quality: 1,
+		});
+
+		if (!result.cancelled) {
+			setPhotoOfFrontOfId(result.uri);
+		}
+	};
+
+	const pickBackOfId = async () => {
+		// No permissions request is necessary for launching the image library
+		let result = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.Images,
+			allowsEditing: true,
+			aspect: [4, 3],
+			quality: 1,
+		});
+
+		if (!result.cancelled) {
+			setPhotoOfBackOfId(result.uri);
+		}
+	};
+
 	return (
 		<Container>
 			<Text medium style={styles.subtitle}>
@@ -12,9 +44,13 @@ export default function SubmitIdScreen({ navigation }) {
 				Haydovchilik guvohnomasini qo’shish
 			</Text>
 
-			<Button style={styles.selectIdButton}>
+			<Button onPress={pickFrontOfId} style={styles.selectIdButton}>
 				<Image
-					source={require("../images/noid.png")}
+					source={
+						photoOfFrontOfId
+							? { uri: photoOfFrontOfId }
+							: require("../images/noid.png")
+					}
 					style={styles.idPhoto}
 				/>
 				<Text semiBold>Guvohnoma old tomoni</Text>
@@ -23,9 +59,13 @@ export default function SubmitIdScreen({ navigation }) {
 				</Text>
 			</Button>
 
-			<Button style={styles.selectIdButton}>
+			<Button onPress={pickBackOfId} style={styles.selectIdButton}>
 				<Image
-					source={require("../images/noid.png")}
+					source={
+						photoOfBackOfId
+							? { uri: photoOfBackOfId }
+							: require("../images/noid.png")
+					}
 					style={styles.idPhoto}
 				/>
 				<Text semiBold>Guvohnoma orqa tomoni</Text>
@@ -73,6 +113,7 @@ const styles = StyleSheet.create({
 		width: 46,
 		height: 46,
 		marginRight: 15,
+		borderRadius: 8,
 	},
 	selectIdButton: {
 		justifyContent: "flex-start",

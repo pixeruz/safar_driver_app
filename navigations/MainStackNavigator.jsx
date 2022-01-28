@@ -16,6 +16,7 @@ function MainStackNavigator() {
 				contentStyle: {
 					backgroundColor: "#fff",
 				},
+				animation: "slide_from_right",
 			}}
 		>
 			<Stack.Screen
