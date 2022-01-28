@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import RegistrationScreen from "../screens/RegistrationScreen";
 import RegistrationOTPScreen from "../screens/RegistrationOTPScreen";
 import SubmitIdScreen from "../screens/SubmitIdScreen";
+import SubmitPhotoScreen from "../screens/SubmitPhotoScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +36,13 @@ function RegistrationNavigator() {
 					headerShown: false,
 				}}
 				component={SubmitIdScreen}
+			/>
+			<Stack.Screen
+				name="SubmitPhotoScreen"
+				options={{
+					headerShown: false,
+				}}
+				component={SubmitPhotoScreen}
 			/>
 		</Stack.Navigator>
 	);

@@ -1,7 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Image } from "react-native";
 import { Button, Container, Input, Text } from "../components/styledComponents";
-import Logo from "../images/Logo";
 
 export default function SubmitIdScreen({ navigation }) {
 	return (
@@ -35,7 +34,10 @@ export default function SubmitIdScreen({ navigation }) {
 				</Text>
 			</Button>
 
-			<Button style={styles.submitButton}>
+			<Button
+				onPress={() => navigation.navigate("SubmitPhotoScreen")}
+				style={styles.submitButton}
+			>
 				<Text bold light>
 					Davom ettirish
 				</Text>
