@@ -17,7 +17,10 @@ export default function Onboardingscreen({ navigation }) {
 				uchun ro’yxatdan o’tishingiz kerak!
 			</Text>
 			<View style={styles.space}></View>
-			<Button style={styles.signUpButton}>
+			<Button
+				onPress={() => navigation.navigate("RegistrationScreen")}
+				style={styles.signUpButton}
+			>
 				<Text bold light>
 					Ro’yxatdan o’tish
 				</Text>

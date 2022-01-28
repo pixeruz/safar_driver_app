@@ -3,6 +3,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Onboardingscreen from "../screens/OnBoardingScreen";
 import LoginScreen from "../screens/LoginScreen";
 import OTPScreen from "../screens/OTPScreen";
+import RegistrationScreen from "../screens/RegistrationScreen";
+import MainStackNavigatorHeader from "../components/MainStackNavigatorHeader";
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +37,15 @@ function MainStackNavigator() {
 					headerShown: false,
 				}}
 				component={OTPScreen}
+			/>
+			<Stack.Screen
+				name="RegistrationScreen"
+				options={{
+					headerShown: true,
+					header: MainStackNavigatorHeader,
+					title: "Ro'yxatdan o'tish",
+				}}
+				component={RegistrationScreen}
 			/>
 		</Stack.Navigator>
 	);

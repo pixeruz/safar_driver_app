@@ -1,19 +1,15 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { Button, Container, Input, Text } from "../components/styledComponents";
-import Logo from "../images/Logo";
 
-export default function LoginScreen({ navigation }) {
+export default function RegistrationScreen({ navigation }) {
 	return (
 		<Container>
-			<View style={styles.logoView}>
-				<Logo />
-			</View>
-			<Text bold style={styles.title}>
-				Kirish
-			</Text>
 			<Text medium style={styles.subtitle}>
-				Davom ettirish uchun raqamingizni kiriting
+				1/4
+			</Text>
+			<Text medium style={styles.title}>
+				Davom ettirish uchun raqamingiz va FISHni kiriting
 			</Text>
 			<View style={styles.phoneInputView}>
 				<Text medium style={styles.phoneInputViewLabel}>
@@ -29,10 +25,7 @@ export default function LoginScreen({ navigation }) {
 					Davom ettirish
 				</Text>
 			</Button>
-			<Button
-				onPress={() => navigation.navigate("RegistrationScreen")}
-				style={styles.loginButton}
-			>
+			<Button style={styles.loginButton}>
 				<Text semiBold>Akkountingiz yo'qmi?</Text>
 			</Button>
 		</Container>
@@ -45,7 +38,7 @@ const styles = StyleSheet.create({
 		marginBottom: 30,
 	},
 	title: {
-		fontSize: 20,
+		fontSize: 16,
 	},
 	subtitle: {
 		fontSize: 14,
