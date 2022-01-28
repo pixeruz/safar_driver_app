@@ -84,7 +84,10 @@ export default function SubmitPhotoScreen({ navigation }) {
 				</Button>
 			)}
 
-			<Button style={styles.submitButton}>
+			<Button
+				onPress={() => navigation.replace("WaitStatusScreen")}
+				style={styles.submitButton}
+			>
 				<Text bold light>
 					Davom ettirish
 				</Text>

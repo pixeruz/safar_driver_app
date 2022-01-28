@@ -6,6 +6,7 @@ import OTPScreen from "../screens/OTPScreen";
 import RegistrationScreen from "../screens/RegistrationScreen";
 import MainStackNavigatorHeader from "../components/MainStackNavigatorHeader";
 import CustomRegistrationNavigator from "./CustomRegistrationNavigator";
+import WaitStatusScreen from "../screens/WaitStatusScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -48,6 +49,13 @@ function MainStackNavigator() {
 					title: "Ro'yxatdan o'tish",
 				}}
 				component={CustomRegistrationNavigator}
+			/>
+			<Stack.Screen
+				name="WaitStatusScreen"
+				options={{
+					headerShown: false,
+				}}
+				component={WaitStatusScreen}
 			/>
 		</Stack.Navigator>
 	);
