@@ -17,7 +17,10 @@ export default function WaitStatusScreen({ navigation }) {
 				siz bilan bo’glanadi!
 			</Text>
 
-			<Button style={styles.signUpButton}>
+			<Button
+				onPress={() => navigation.replace("TabBarNavigator")}
+				style={styles.signUpButton}
+			>
 				<Text bold light>
 					Yangilash
 				</Text>

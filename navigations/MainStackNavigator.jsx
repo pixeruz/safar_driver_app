@@ -7,6 +7,7 @@ import RegistrationScreen from "../screens/RegistrationScreen";
 import MainStackNavigatorHeader from "../components/MainStackNavigatorHeader";
 import CustomRegistrationNavigator from "./CustomRegistrationNavigator";
 import WaitStatusScreen from "../screens/WaitStatusScreen";
+import MainBottomBarNavigator from "./MainBottomBarNavigator";
 
 const Stack = createNativeStackNavigator();
 
@@ -56,6 +57,13 @@ function MainStackNavigator() {
 					headerShown: false,
 				}}
 				component={WaitStatusScreen}
+			/>
+			<Stack.Screen
+				name="TabBarNavigator"
+				options={{
+					headerShown: false,
+				}}
+				component={MainBottomBarNavigator}
 			/>
 		</Stack.Navigator>
 	);
