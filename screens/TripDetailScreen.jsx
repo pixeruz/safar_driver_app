@@ -1,5 +1,7 @@
 import React from "react";
 import { Image, Pressable, ScrollView, StyleSheet, View } from "react-native";
+import Bookers from "../components/Bookers";
+import ModalUserInfo from "../components/ModalUserInfo";
 import Pale from "../components/Pale";
 import { Container, Text } from "../components/styledComponents";
 import ArrowIcon from "../images/ArrowIcon";
@@ -87,6 +89,12 @@ export default function TripDetailScreen({ navigation }) {
 					/>
 				</View>
 				<Pale />
+				<View style={styles.seatsSection}>
+					<Text style={styles.seatsSectionTitle} bold>
+						Bronlagan yo’lovchilar
+					</Text>
+				</View>
+				<Bookers />
 			</ScrollView>
 		</Container>
 	);
