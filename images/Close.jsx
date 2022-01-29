@@ -1,7 +1,7 @@
 import React from "react";
 import * as Svg from "react-native-svg";
 
-export default function Back() {
+export default function CloseIcon() {
 	return (
 		<Svg.Svg
 			width="16"
