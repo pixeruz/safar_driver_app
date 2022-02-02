@@ -5,6 +5,7 @@ import {
 	View,
 	Pressable,
 	TextInput,
+	ScrollView,
 } from "react-native";
 
 export function Text({ ...props }) {
@@ -37,7 +38,23 @@ export function Text({ ...props }) {
 	);
 }
 
-export function Container({ ...props }) {
+export function Container({ scroll, ...props }) {
+	if (scroll) {
+		return (
+			<ScrollView
+				{...props}
+				containerStyle={{
+					...defaultStyles.defaultContainerStyles,
+					...props.containerStyle,
+				}}
+				style={{
+					...props.style,
+					padding: 16,
+				}}
+			/>
+		);
+	}
+
 	return (
 		<View
 			{...props}
@@ -95,3 +112,5 @@ const defaultStyles = StyleSheet.create({
 		marginVertical: 6,
 	},
 });
+
+export { defaultStyles };

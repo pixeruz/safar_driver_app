@@ -1,10 +1,18 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { Button, Container, Input, Text } from "../components/styledComponents";
+import {
+	Button,
+	Container,
+	defaultStyles,
+	Input,
+	Text,
+} from "../components/styledComponents";
+import CalendarIcon from "../images/CalendarIcon";
+import TimeIcon from "../images/TimeIcon";
 
 export default function AddTripProperties({ navigation }) {
 	return (
-		<Container>
+		<Container scroll>
 			<Text medium style={styles.subtitle}>
 				1/3
 			</Text>
@@ -13,9 +21,61 @@ export default function AddTripProperties({ navigation }) {
 			</Text>
 			<View style={styles.phoneInputView}>
 				<Text medium style={styles.phoneInputViewLabel}>
-					Telefon raqamingiz:
+					Qaysi shahardan?
 				</Text>
-				<Input value="+998" placeholder="Telefon raqam" />
+				<Button
+					style={{
+						...defaultStyles.defaultInputStyles,
+						...styles.inputableButton,
+					}}
+				>
+					<Text>
+						<Text style={{ color: "#9BA1A7" }}>Qaysi</Text> dan
+					</Text>
+				</Button>
+			</View>
+			<View style={styles.phoneInputView}>
+				<Text medium style={styles.phoneInputViewLabel}>
+					Qaysi shaharga?
+				</Text>
+				<Button
+					style={{
+						...defaultStyles.defaultInputStyles,
+						...styles.inputableButton,
+					}}
+				>
+					<Text>
+						<Text style={{ color: "#9BA1A7" }}>Qaysi</Text> ga
+					</Text>
+				</Button>
+			</View>
+			<View style={styles.phoneInputView}>
+				<Text medium style={styles.phoneInputViewLabel}>
+					Ketish kuni sanasi
+				</Text>
+				<Button
+					style={{
+						...defaultStyles.defaultInputStyles,
+						...styles.inputableButton,
+					}}
+				>
+					<Text style={styles.buttonText}>21 / 01 / 2022</Text>
+					<CalendarIcon />
+				</Button>
+			</View>
+			<View style={styles.phoneInputView}>
+				<Text medium style={styles.phoneInputViewLabel}>
+					Ketish kuni sanasi
+				</Text>
+				<Button
+					style={{
+						...defaultStyles.defaultInputStyles,
+						...styles.inputableButton,
+					}}
+				>
+					<Text style={styles.buttonText}>06:00</Text>
+					<TimeIcon />
+				</Button>
 			</View>
 			<Button
 				onPress={() => navigation.navigate("RegistrationOTPScreen")}
@@ -24,12 +84,6 @@ export default function AddTripProperties({ navigation }) {
 				<Text bold light>
 					Davom ettirish
 				</Text>
-			</Button>
-			<Button
-				onPress={() => navigation.navigate("LoginScreen")}
-				style={styles.loginButton}
-			>
-				<Text semiBold>Akkountingiz bormi?</Text>
 			</Button>
 		</Container>
 	);
@@ -57,15 +111,24 @@ const styles = StyleSheet.create({
 	},
 	signUpButton: {
 		backgroundColor: "#771E99",
+		marginTop: 20,
 	},
 	loginButton: {
 		backgroundColor: "#DFE4E9",
 	},
 	phoneInputView: {
-		marginVertical: 20,
+		marginTop: 20,
 	},
 	phoneInputViewLabel: {
 		fontSize: 14,
 		color: "#222222",
+	},
+	inputableButton: {
+		textAlign: "left",
+		justifyContent: "flex-start",
+		flexDirection: "row",
+	},
+	buttonText: {
+		marginRight: "auto",
 	},
 });
