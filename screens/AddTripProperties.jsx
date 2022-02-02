@@ -9,8 +9,37 @@ import {
 } from "../components/styledComponents";
 import CalendarIcon from "../images/CalendarIcon";
 import TimeIcon from "../images/TimeIcon";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 export default function AddTripProperties({ navigation }) {
+	const [invisibleDate, setInvisibleDate] = React.useState(false);
+	const [selectedDate, setSelectedDate] = React.useState("");
+
+	const [invisibleTime, setInvisibleTime] = React.useState(false);
+	const [selectedTime, setSelectedTime] = React.useState("");
+
+	const showDatePicker = () => {
+		setDatePickerVisibility(true);
+	};
+
+	const hideDatePicker = () => {
+		setInvisibleDate(false);
+	};
+
+	const hideTimePicker = () => {
+		setInvisibleTime(false);
+	};
+
+	const handleConfirmDate = (date) => {
+		setSelectedDate(date);
+		hideDatePicker();
+	};
+
+	const handleConfirmTime = (date) => {
+		setSelectedTime(date);
+		hideTimePicker();
+	};
+
 	return (
 		<Container scroll>
 			<Text medium style={styles.subtitle}>
@@ -24,6 +53,7 @@ export default function AddTripProperties({ navigation }) {
 					Qaysi shahardan?
 				</Text>
 				<Button
+					onPress={() => navigation.navigate("CitiesScreen")}
 					style={{
 						...defaultStyles.defaultInputStyles,
 						...styles.inputableButton,
@@ -39,6 +69,7 @@ export default function AddTripProperties({ navigation }) {
 					Qaysi shaharga?
 				</Text>
 				<Button
+					onPress={() => navigation.navigate("CitiesScreen")}
 					style={{
 						...defaultStyles.defaultInputStyles,
 						...styles.inputableButton,
@@ -58,22 +89,33 @@ export default function AddTripProperties({ navigation }) {
 						...defaultStyles.defaultInputStyles,
 						...styles.inputableButton,
 					}}
+					onPress={() => {
+						setInvisibleDate(!invisibleDate);
+					}}
 				>
-					<Text style={styles.buttonText}>21 / 01 / 2022</Text>
+					<Text style={styles.buttonText}>
+						{selectedDate.toString() || "Vaqtni kiriting"}
+					</Text>
+
 					<CalendarIcon />
 				</Button>
 			</View>
 			<View style={styles.phoneInputView}>
 				<Text medium style={styles.phoneInputViewLabel}>
-					Ketish kuni sanasi
+					Ketish vaqti
 				</Text>
 				<Button
+					onPress={() => {
+						setInvisibleTime(!invisibleTime);
+					}}
 					style={{
 						...defaultStyles.defaultInputStyles,
 						...styles.inputableButton,
 					}}
 				>
-					<Text style={styles.buttonText}>06:00</Text>
+					<Text style={styles.buttonText}>
+						{selectedTime.toString() || "Vaqtni tanlang"}
+					</Text>
 					<TimeIcon />
 				</Button>
 			</View>
@@ -85,6 +127,23 @@ export default function AddTripProperties({ navigation }) {
 					Davom ettirish
 				</Text>
 			</Button>
+
+			<DateTimePickerModal
+				isVisible={invisibleDate}
+				mode="date"
+				onConfirm={handleConfirmDate}
+				onCancel={hideDatePicker}
+				minimumDate={new Date()}
+				display="spinner"
+			/>
+
+			<DateTimePickerModal
+				isVisible={invisibleTime}
+				mode="time"
+				onConfirm={handleConfirmTime}
+				onCancel={hideTimePicker}
+				minimumDate={new Date()}
+			/>
 		</Container>
 	);
 }

@@ -10,6 +10,7 @@ import WaitStatusScreen from "../screens/WaitStatusScreen";
 import MainBottomBarNavigator from "./MainBottomBarNavigator";
 import TripDetailScreen from "../screens/TripDetailScreen";
 import CustomAddTripNavigator from "./CustomAddTripNavigator";
+import CitiesScreen from "../screens/CitiesScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -64,6 +65,15 @@ function MainStackNavigator() {
 					title: "Yangi yo'nalish yaratish",
 				}}
 				component={CustomAddTripNavigator}
+			/>
+			<Stack.Screen
+				name="CitiesScreen"
+				options={{
+					headerShown: true,
+					header: MainStackNavigatorHeader,
+					title: "Shahar tanlash",
+				}}
+				component={CitiesScreen}
 			/>
 			<Stack.Screen
 				name="WaitStatusScreen"

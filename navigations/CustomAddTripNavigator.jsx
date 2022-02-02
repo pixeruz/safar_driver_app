@@ -5,6 +5,7 @@ import RegistrationOTPScreen from "../screens/RegistrationOTPScreen";
 import SubmitIdScreen from "../screens/SubmitIdScreen";
 import SubmitPhotoScreen from "../screens/SubmitPhotoScreen";
 import AddTripProperties from "../screens/AddTripProperties";
+import CitiesScreen from "../screens/CitiesScreen";
 
 const Stack = createNativeStackNavigator();
 
