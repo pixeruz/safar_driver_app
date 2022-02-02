@@ -16,7 +16,10 @@ export default function HomeScreen({ navigation }) {
 					Mening safarlarim
 				</Text>
 			</View>
-			<Button style={styles.floatingButton}>
+			<Button
+				onPress={() => navigation.navigate("AddTripScreen")}
+				style={styles.floatingButton}
+			>
 				<PlusIcon />
 				<Text medium style={styles.create}>
 					Yaratish

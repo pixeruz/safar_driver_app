@@ -9,6 +9,7 @@ import CustomRegistrationNavigator from "./CustomRegistrationNavigator";
 import WaitStatusScreen from "../screens/WaitStatusScreen";
 import MainBottomBarNavigator from "./MainBottomBarNavigator";
 import TripDetailScreen from "../screens/TripDetailScreen";
+import CustomAddTripNavigator from "./CustomAddTripNavigator";
 
 const Stack = createNativeStackNavigator();
 
@@ -54,6 +55,15 @@ function MainStackNavigator() {
 					title: "Ro'yxatdan o'tish",
 				}}
 				component={CustomRegistrationNavigator}
+			/>
+			<Stack.Screen
+				name="AddTripScreen"
+				options={{
+					headerShown: true,
+					header: MainStackNavigatorHeader,
+					title: "Yangi yo'nalish yaratish",
+				}}
+				component={CustomAddTripNavigator}
 			/>
 			<Stack.Screen
 				name="WaitStatusScreen"
