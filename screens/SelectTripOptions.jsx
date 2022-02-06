@@ -22,7 +22,7 @@ export default function SelectTripOptions({ navigation }) {
 			<OneOptionRow title="Konditsioner" data={air} setData={setAir} />
 
 			<Button
-				onPress={() => navigation.navigate("RegistrationOTPScreen")}
+				onPress={() => navigation.navigate("SuccessfullyCreated")}
 				style={styles.signUpButton}
 			>
 				<Text bold light>

@@ -11,6 +11,7 @@ import MainBottomBarNavigator from "./MainBottomBarNavigator";
 import TripDetailScreen from "../screens/TripDetailScreen";
 import CustomAddTripNavigator from "./CustomAddTripNavigator";
 import CitiesScreen from "../screens/CitiesScreen";
+import SuccessfullyCreated from "../screens/SuccessfullyCreated";
 
 const Stack = createNativeStackNavigator();
 
@@ -25,7 +26,7 @@ function MainStackNavigator() {
 				gestureEnabled: true,
 				gestureDirection: "horizontal",
 			}}
-			initialRouteName="TabBarNavigator"
+			// initialRouteName="TabBarNavigator"
 		>
 			<Stack.Screen
 				name="OnBoardingScreen"
@@ -95,6 +96,13 @@ function MainStackNavigator() {
 					headerShown: false,
 				}}
 				component={TripDetailScreen}
+			/>
+			<Stack.Screen
+				name="SuccessfullyCreated"
+				options={{
+					headerShown: false,
+				}}
+				component={SuccessfullyCreated}
 			/>
 		</Stack.Navigator>
 	);

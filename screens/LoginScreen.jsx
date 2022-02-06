@@ -1,9 +1,62 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
-import { Button, Container, Input, Text } from "../components/styledComponents";
+import { View, StyleSheet, Alert } from "react-native";
+import {
+	Button,
+	Container,
+	defaultStyles,
+	Input,
+	Text,
+} from "../components/styledComponents";
 import Logo from "../images/Logo";
+import { useQuery } from "react-query";
+import { TextInputMask } from "react-native-masked-text";
+import AuthService from "../api/AuthAPI";
 
 export default function LoginScreen({ navigation }) {
+	const [phone, setPhone] = React.useState("998");
+	const [loading, setLoading] = React.useState(false);
+	const phoneRef = React.useRef();
+
+	const login = async () => {
+		try {
+			setLoading(true);
+
+			if (typeof String.prototype.replaceAll === "undefined") {
+				String.prototype.replaceAll = function (match, replace) {
+					return this.replace(new RegExp(match, "g"), () => replace);
+				};
+			}
+
+			let correctPhone = phone.replaceAll(/\D/g, "");
+
+			if (correctPhone.length !== 12) {
+				return;
+			}
+
+			let dataSnapshot = await AuthService.loginService(correctPhone);
+
+			if (dataSnapshot?.ok) {
+				navigation.navigate("OTPScreen", {
+					id: dataSnapshot.data.id,
+					code: dataSnapshot.data.code,
+				});
+			} else {
+				let msg = dataSnapshot.message.startsWith("Invalid")
+					? "Raqam xato kiritilgan"
+					: "Siz ro'yxatdan o'tmagansiz, ro'yxatdan o'ting";
+				Alert.alert("Xatolik", msg);
+			}
+		} catch (error) {
+			console.warn(error);
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	React.useEffect(() => {
+		phoneRef.current.autoFocus = true;
+	});
+
 	return (
 		<Container>
 			<View style={styles.logoView}>
@@ -19,10 +72,23 @@ export default function LoginScreen({ navigation }) {
 				<Text medium style={styles.phoneInputViewLabel}>
 					Telefon raqamingiz:
 				</Text>
-				<Input value="+998" placeholder="Telefon raqam" />
+				<TextInputMask
+					type={"custom"}
+					ref={phoneRef}
+					autoFocus
+					keyboardType="phone-pad"
+					options={{
+						mask: "+998 (99) 999-99-99",
+					}}
+					placeholder="Telefon raqam"
+					value={phone}
+					onChangeText={setPhone}
+					style={defaultStyles.defaultInputStyles}
+				/>
 			</View>
 			<Button
-				onPress={() => navigation.navigate("OTPScreen")}
+				disabled={loading}
+				onPress={() => login()}
 				style={styles.signUpButton}
 			>
 				<Text bold light>
@@ -30,6 +96,7 @@ export default function LoginScreen({ navigation }) {
 				</Text>
 			</Button>
 			<Button
+				disabled={loading}
 				onPress={() => navigation.navigate("RegistrationScreen")}
 				style={styles.loginButton}
 			>
