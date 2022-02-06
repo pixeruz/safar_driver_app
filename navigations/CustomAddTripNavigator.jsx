@@ -7,6 +7,7 @@ import SubmitPhotoScreen from "../screens/SubmitPhotoScreen";
 import AddTripProperties from "../screens/AddTripProperties";
 import CitiesScreen from "../screens/CitiesScreen";
 import SelectSeatScreen from "../screens/SelectSeatScreen";
+import SelectTripOptions from "../screens/SelectTripOptions";
 
 const Stack = createNativeStackNavigator();
 
@@ -34,6 +35,14 @@ function CustomAddTripNavigator() {
 					headerShown: false,
 				}}
 				component={SelectSeatScreen}
+			/>
+
+			<Stack.Screen
+				name="SelectTripOptions"
+				options={{
+					headerShown: false,
+				}}
+				component={SelectTripOptions}
 			/>
 		</Stack.Navigator>
 	);

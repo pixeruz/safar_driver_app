@@ -49,7 +49,7 @@ export default function SelectSeatScreen({ navigation }) {
 			/>
 
 			<Button
-				onPress={() => navigation.navigate("RegistrationOTPScreen")}
+				onPress={() => navigation.navigate("SelectTripOptions")}
 				style={styles.signUpButton}
 			>
 				<Text bold light>
