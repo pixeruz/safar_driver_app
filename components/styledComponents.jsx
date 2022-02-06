@@ -81,8 +81,9 @@ export function Button({ ...props }) {
 export function Input({ ...props }) {
 	return (
 		<TextInput
-			placeholderTextColor={"#222222"}
+			placeholderTextColor={props.placeholderTextColor || "#222222"}
 			{...props}
+			ref={props?.innerRef && props.innerRef}
 			style={{
 				...defaultStyles.defaultInputStyles,
 				...props.style,

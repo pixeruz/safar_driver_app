@@ -120,7 +120,7 @@ export default function AddTripProperties({ navigation }) {
 				</Button>
 			</View>
 			<Button
-				onPress={() => navigation.navigate("RegistrationOTPScreen")}
+				onPress={() => navigation.navigate("SelectSeat")}
 				style={styles.signUpButton}
 			>
 				<Text bold light>
