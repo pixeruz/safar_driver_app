@@ -2,9 +2,16 @@ import React from "react";
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import AppLoading from "expo-app-loading";
+import {
+	getValueForFromSecureStore,
+	removeValueFromSecureStore,
+} from "../services/secureStore";
+import { useOptions } from "../contexts/OptionsContext";
+import { getDataFromAsyncStorage } from "../services/asyncStorage";
 
 export default function PreventSplashScreen({ children }) {
 	const [isLoaded, setLoaded] = React.useState(false);
+	const [options, setOptions] = useOptions();
 
 	async function _cachedResources() {
 		await Font.loadAsync({
@@ -17,6 +24,15 @@ export default function PreventSplashScreen({ children }) {
 			"Inter-Light": require("../fonts/Inter-Light.ttf"),
 			"Inter-Medium": require("../fonts/Inter-Medium.ttf"),
 			"Inter-Thin": require("../fonts/Inter-Thin.ttf"),
+		});
+
+		const token = await getValueForFromSecureStore("token");
+		const driver = await getDataFromAsyncStorage("driver");
+
+		setOptions({
+			...options,
+			token: token,
+			driver: driver,
 		});
 	}
 

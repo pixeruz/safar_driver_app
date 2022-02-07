@@ -10,5 +10,5 @@ export async function getValueForFromSecureStore(key) {
 }
 
 export async function removeValueFromSecureStore(key) {
-	await SecureStore.deleteItemAsync("token");
+	await SecureStore.deleteItemAsync(key);
 }
