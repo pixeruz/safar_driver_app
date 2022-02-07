@@ -2,10 +2,13 @@ import React from "react";
 import { View, StyleSheet, Image } from "react-native";
 import { Button, Container, Input, Text } from "../components/styledComponents";
 import * as ImagePicker from "expo-image-picker";
+import { useOptions } from "../contexts/OptionsContext";
+import CarsService from "../api/CarsService";
 
 export default function SubmitIdScreen({ navigation }) {
 	const [photoOfFrontOfId, setPhotoOfFrontOfId] = React.useState();
 	const [photoOfBackOfId, setPhotoOfBackOfId] = React.useState();
+	const [options, setOptions] = useOptions();
 
 	const pickFrontOfId = async () => {
 		// No permissions request is necessary for launching the image library
@@ -18,8 +21,25 @@ export default function SubmitIdScreen({ navigation }) {
 
 		if (!result.cancelled) {
 			setPhotoOfFrontOfId(result.uri);
+			setOptions({
+				...options,
+				licence: result.uri,
+			});
 		}
 	};
+
+	React.useEffect(() => {
+		(async () => {
+			let data = await CarsService.getCars(options.token);
+			if (data?.data?.cars?.rows[0]?.car_brand_id) {
+				setOptions({
+					...options,
+					brand_id: data?.data?.cars?.rows[0]?.car_brand_id,
+					brand_color: "#000000",
+				});
+			}
+		})();
+	}, []);
 
 	// const pickBackOfId = async () => {
 	// 	// No permissions request is necessary for launching the image library
