@@ -1,9 +1,62 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
+import AuthService from "../api/AuthAPI";
 import { Button, Container, Input, Text } from "../components/styledComponents";
 import Logo from "../images/Logo";
+import { saveToSecureStorage } from "../services/secureStore";
 
-export default function OTPScreen({ navigation }) {
+export default function OTPScreen({ route, navigation }) {
+	const { id } = route.params;
+	const codeRef = React.useRef(null);
+	const [codeValue, setCodeValue] = React.useState("");
+	const [loading, setLoading] = React.useState(false);
+
+	React.useEffect(() => {
+		if (!id) {
+			navigation.goBack();
+		}
+
+		setTimeout(() => codeRef?.current?.focus(), 1000);
+
+		return null;
+	}, []);
+
+	React.useEffect(() => {
+		console.log("FIRSTINIT", codeValue);
+		if (codeValue?.length == 5) {
+			checkCode();
+		}
+	}, [codeValue]);
+
+	async function checkCode() {
+		try {
+			setLoading(true);
+
+			if (codeValue?.length !== 5) {
+				return;
+			}
+
+			let snapshotData = await AuthService.checkCode(codeValue, id);
+
+			if (!snapshotData?.ok) {
+				return;
+			} else {
+				await saveToSecureStorage("token", snapshotData.data.token);
+				if (!snapshotData.data.user.driver) {
+					navigation.navigate("RegistrationScreen", {
+						screen: "SubmitIdScreen",
+					});
+				} else {
+					navigation.navigate("TabBarNavigator");
+				}
+			}
+		} catch (error) {
+			console.warn(error);
+		} finally {
+			setLoading(false);
+		}
+	}
+
 	return (
 		<Container>
 			<View style={styles.logoView}>
@@ -21,9 +74,16 @@ export default function OTPScreen({ navigation }) {
 				<Text medium style={styles.OTPInputViewLabel}>
 					SMS-kod:
 				</Text>
-				<Input value="000000" placeholder="Telefon raqam" />
+				<Input
+					editable={!loading}
+					keyboardType={"phone-pad"}
+					value={codeValue}
+					onChangeText={setCodeValue}
+					placeholder="Telefon raqam"
+					autoFocus
+				/>
 			</View>
-			<Button style={styles.submitButton}>
+			<Button disabled={loading} style={styles.submitButton}>
 				<Text bold light>
 					Davom ettirish
 				</Text>

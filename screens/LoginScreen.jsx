@@ -35,10 +35,11 @@ export default function LoginScreen({ navigation }) {
 
 			let dataSnapshot = await AuthService.loginService(correctPhone);
 
+			console.log(dataSnapshot);
+
 			if (dataSnapshot?.ok) {
 				navigation.navigate("OTPScreen", {
 					id: dataSnapshot.data.id,
-					code: dataSnapshot.data.code,
 				});
 			} else {
 				let msg = dataSnapshot.message.startsWith("Invalid")

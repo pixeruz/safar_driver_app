@@ -55,6 +55,7 @@ export default class AuthService {
 			},
 			body: JSON.stringify({
 				code,
+				user_device: "other",
 			}),
 		});
 		response = await response.json();
