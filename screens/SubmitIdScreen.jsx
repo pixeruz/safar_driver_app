@@ -34,7 +34,7 @@ export default function SubmitIdScreen({ navigation }) {
 			if (data?.data?.cars?.rows[0]?.car_brand_id) {
 				setOptions({
 					...options,
-					brand_id: data?.data?.cars?.rows[0]?.car_brand_id,
+					brand_id: data?.data?.cars?.rows[0]?.car_id,
 					brand_color: "#000000",
 				});
 			}

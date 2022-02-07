@@ -43,14 +43,12 @@ export default function OTPScreen({ route, navigation }) {
 			} else {
 				await saveToSecureStorage("token", snapshotData.data.token);
 				if (!snapshotData.data.user.driver) {
+					await storeDataToAsyncStorage("driver", "not");
 					navigation.replace("RegistrationScreen", {
 						screen: "SubmitIdScreen",
 					});
 				} else {
-					await storeDataToAsyncStorage(
-						"driver",
-						snapshotData.data.user.driver
-					);
+					await storeDataToAsyncStorage("driver", "confirmed");
 					navigation.reset({
 						index: 0,
 						routes: [{ name: "TabBarNavigator" }],

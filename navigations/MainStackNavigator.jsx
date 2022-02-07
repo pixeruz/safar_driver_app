@@ -32,7 +32,8 @@ function MainStackNavigator() {
 			initialRouteName={
 				options?.token && options?.driver
 					? "TabBarNavigator"
-					: options?.token && !options?.driver
+					: options?.token &&
+					  (!options?.driver || options?.token !== "confirmed")
 					? "RegistrationScreen"
 					: "LoginScreen"
 			}

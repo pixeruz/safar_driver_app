@@ -21,7 +21,11 @@ export default function MainStackNavigatorHeader({
 				<View style={styles.header}>
 					<Button
 						onPress={() => {
-							navigation?.replace("LoginScreen");
+							try {
+								navigation?.goBack();
+							} catch (e) {
+								navigation?.replace("LoginScreen");
+							}
 						}}
 						style={styles.backButton}
 					>

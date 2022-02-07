@@ -1,13 +1,18 @@
 import React from "react";
-import { View, StyleSheet, Image, Dimensions } from "react-native";
+import { View, StyleSheet, Image, Dimensions, Alert } from "react-native";
 import { Button, Container, Input, Text } from "../components/styledComponents";
 import PlusCircle from "../images/PlusCircle";
 import * as ImagePicker from "expo-image-picker";
+import { useOptions } from "../contexts/OptionsContext";
+import AuthService from "../api/AuthAPI";
+import { storeDataToAsyncStorage } from "../services/asyncStorage";
 
 const { width, height } = Dimensions.get("screen");
 
 export default function SubmitPhotoScreen({ navigation }) {
 	const [carPhoto, setCarPhoto] = React.useState();
+	const [options, setOptions] = useOptions();
+	const [loading, setLoading] = React.useState(false);
 
 	const pickCarPhoto = async () => {
 		// No permissions request is necessary for launching the image library
@@ -20,6 +25,46 @@ export default function SubmitPhotoScreen({ navigation }) {
 
 		if (!result.cancelled) {
 			setCarPhoto(result.uri);
+			setOptions({
+				...options,
+				car_photo: result.uri,
+			});
+		}
+	};
+
+	const apply = async () => {
+		setLoading(true);
+		console.log("test");
+
+		try {
+			if (!options?.car_photo) {
+				return;
+			}
+
+			let result = await AuthService.sendApplyToRegistration(
+				options?.brand_id,
+				options?.brand_color,
+				"31A123AA",
+				options?.licence,
+				options.car_photo,
+				options.token
+			);
+
+			if (
+				result.ok ||
+				result?.message?.startsWith("#is_confirmed:false")
+			) {
+				navigation.navigate("WaitStatusScreen");
+				await storeDataToAsyncStorage("driver", "not");
+			} else if (result?.message?.startsWith("#is_confirmed:true")) {
+				navigation.navigate("TabBarNavigator");
+				await storeDataToAsyncStorage("driver", "confirmed");
+			} else {
+				Alert.alert("Xatolik", result?.message);
+			}
+		} catch (error) {
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -84,8 +129,11 @@ export default function SubmitPhotoScreen({ navigation }) {
 				</Button>
 			)}
 
+			<Text medium>Mashinaning raqami</Text>
+
 			<Button
-				onPress={() => navigation.replace("WaitStatusScreen")}
+				disabled={loading}
+				onPress={() => apply()}
 				style={styles.submitButton}
 			>
 				<Text bold light>

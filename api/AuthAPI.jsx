@@ -102,8 +102,8 @@ export default class AuthService {
 		});
 
 		formdata.append("car", carBrandId);
-		formdata.append("car_color", carNumber);
-		formdata.append("car_number", carNumber);
+		formdata.append("car_color", carColor);
+		formdata.append("car_number", `20A222AA`);
 
 		let res = await fetch(SERVER_URL + "/api/users/become-driver", {
 			method: "POST",
