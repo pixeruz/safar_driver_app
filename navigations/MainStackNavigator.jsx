@@ -12,10 +12,13 @@ import TripDetailScreen from "../screens/TripDetailScreen";
 import CustomAddTripNavigator from "./CustomAddTripNavigator";
 import CitiesScreen from "../screens/CitiesScreen";
 import SuccessfullyCreated from "../screens/SuccessfullyCreated";
+import { useOptions } from "../contexts/OptionsContext";
 
 const Stack = createNativeStackNavigator();
 
 function MainStackNavigator() {
+	const [options] = useOptions();
+
 	return (
 		<Stack.Navigator
 			screenOptions={{
@@ -26,7 +29,13 @@ function MainStackNavigator() {
 				gestureEnabled: true,
 				gestureDirection: "horizontal",
 			}}
-			// initialRouteName="TabBarNavigator"
+			initialRouteName={
+				options?.token && options?.driver
+					? "TabBarNavigator"
+					: options?.token && !options?.driver
+					? "RegistrationScreen"
+					: "LoginScreen"
+			}
 		>
 			<Stack.Screen
 				name="OnBoardingScreen"

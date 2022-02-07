@@ -23,7 +23,6 @@ export default function OTPScreen({ route, navigation }) {
 	}, []);
 
 	React.useEffect(() => {
-		console.log("FIRSTINIT", codeValue);
 		if (codeValue?.length == 5) {
 			checkCode();
 		}

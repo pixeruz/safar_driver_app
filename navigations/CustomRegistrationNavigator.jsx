@@ -4,10 +4,13 @@ import RegistrationScreen from "../screens/RegistrationScreen";
 import RegistrationOTPScreen from "../screens/RegistrationOTPScreen";
 import SubmitIdScreen from "../screens/SubmitIdScreen";
 import SubmitPhotoScreen from "../screens/SubmitPhotoScreen";
+import { useOptions } from "../contexts/OptionsContext";
 
 const Stack = createNativeStackNavigator();
 
 function RegistrationNavigator() {
+	const [options] = useOptions();
+
 	return (
 		<Stack.Navigator
 			screenOptions={{
@@ -16,6 +19,7 @@ function RegistrationNavigator() {
 				},
 				animation: "slide_from_right",
 			}}
+			initialRouteName={options?.token ? "SubmitIdScreen" : undefined}
 		>
 			<Stack.Screen
 				name="RegistrationSecondScreen"

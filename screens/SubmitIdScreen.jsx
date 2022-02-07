@@ -21,19 +21,19 @@ export default function SubmitIdScreen({ navigation }) {
 		}
 	};
 
-	const pickBackOfId = async () => {
-		// No permissions request is necessary for launching the image library
-		let result = await ImagePicker.launchImageLibraryAsync({
-			mediaTypes: ImagePicker.MediaTypeOptions.Images,
-			allowsEditing: true,
-			aspect: [4, 3],
-			quality: 1,
-		});
+	// const pickBackOfId = async () => {
+	// 	// No permissions request is necessary for launching the image library
+	// 	let result = await ImagePicker.launchImageLibraryAsync({
+	// 		mediaTypes: ImagePicker.MediaTypeOptions.Images,
+	// 		allowsEditing: true,
+	// 		aspect: [4, 3],
+	// 		quality: 1,
+	// 	});
 
-		if (!result.cancelled) {
-			setPhotoOfBackOfId(result.uri);
-		}
-	};
+	// 	if (!result.cancelled) {
+	// 		setPhotoOfBackOfId(result.uri);
+	// 	}
+	// };
 
 	return (
 		<Container>
@@ -53,13 +53,13 @@ export default function SubmitIdScreen({ navigation }) {
 					}
 					style={styles.idPhoto}
 				/>
-				<Text semiBold>Guvohnoma old tomoni</Text>
+				<Text semiBold>Guvohnoma</Text>
 				<Text style={styles.idPhotoEditText} medium>
 					O'zgartirish
 				</Text>
 			</Button>
 
-			<Button onPress={pickBackOfId} style={styles.selectIdButton}>
+			{/* <Button onPress={pickBackOfId} style={styles.selectIdButton}>
 				<Image
 					source={
 						photoOfBackOfId
@@ -72,7 +72,7 @@ export default function SubmitIdScreen({ navigation }) {
 				<Text style={styles.idPhotoEditText} medium>
 					O'zgartirish
 				</Text>
-			</Button>
+			</Button> */}
 
 			<Button
 				onPress={() => navigation.navigate("SubmitPhotoScreen")}
