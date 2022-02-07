@@ -3,6 +3,7 @@ import { View, StyleSheet } from "react-native";
 import AuthService from "../api/AuthAPI";
 import { Button, Container, Input, Text } from "../components/styledComponents";
 import Logo from "../images/Logo";
+import { storeDataToAsyncStorage } from "../services/asyncStorage";
 import { saveToSecureStorage } from "../services/secureStore";
 
 export default function OTPScreen({ route, navigation }) {
@@ -43,11 +44,18 @@ export default function OTPScreen({ route, navigation }) {
 			} else {
 				await saveToSecureStorage("token", snapshotData.data.token);
 				if (!snapshotData.data.user.driver) {
-					navigation.navigate("RegistrationScreen", {
+					navigation.replace("RegistrationScreen", {
 						screen: "SubmitIdScreen",
 					});
 				} else {
-					navigation.navigate("TabBarNavigator");
+					await storeDataToAsyncStorage(
+						"driver",
+						snapshotData.data.user.driver
+					);
+					navigation.reset({
+						index: 0,
+						routes: [{ name: "TabBarNavigator" }],
+					});
 				}
 			}
 		} catch (error) {
