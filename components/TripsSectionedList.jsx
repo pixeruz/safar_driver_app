@@ -5,6 +5,7 @@ import {
 	StatusBar,
 	Pressable,
 	RefreshControl,
+	ActivityIndicator,
 } from "react-native";
 import React from "react";
 import { Text } from "./styledComponents";
@@ -15,25 +16,6 @@ import moment from "moment";
 import _ from "lodash";
 
 moment.locale("uz-UZ");
-
-const DATA = [
-	{
-		title: "6-yanvar",
-		data: ["Pizza", "Burger", "Risotto"],
-	},
-	{
-		title: "Bugun",
-		data: ["French Fries", "Onion Rings", "Fried Shrimps"],
-	},
-	{
-		title: "Kecha",
-		data: ["Water", "Coke", "Beer"],
-	},
-	{
-		title: "3-yanvar",
-		data: ["Cheese Cake", "Ice Cream"],
-	},
-];
 
 const Item = ({ item, navigation }) => {
 	return (
@@ -80,33 +62,43 @@ export default function TripsSectionedList({ navigation }) {
 	const [options] = useOptions();
 	const [trips, setTrips] = React.useState([]);
 	const [refreshing, setRefreshing] = React.useState(false);
+	const [loading, setLoading] = React.useState(false);
 
 	async function loadData() {
-		let data = await TripService.getTrips(options?.token);
-		if (data.ok) {
-			if (data.data.trip) {
-				let arr = data.data.trip;
-				arr = arr.map((e) => {
-					return {
-						...e,
-						trip_etime: moment(e.trip_time).format("LL"),
-					};
-				});
-				arr = _.groupBy(arr, (e) => e.trip_etime);
-				let a = [];
-				for (const item in arr) {
-					a.push({
-						title: item,
-						data: arr[item],
+		setRefreshing(true);
+
+		try {
+			let data = await TripService.getTrips(options?.token);
+			if (data.ok) {
+				if (data.data.trip) {
+					let arr = data.data.trip;
+					arr = arr.map((e) => {
+						return {
+							...e,
+							trip_etime: moment(e.trip_time).format("LL"),
+						};
 					});
+					arr = _.groupBy(arr, (e) => e.trip_etime);
+					let a = [];
+					for (const item in arr) {
+						a.push({
+							title: item,
+							data: arr[item],
+						});
+					}
+					setTrips(a);
 				}
-				setTrips(a);
 			}
+		} catch (error) {
+		} finally {
+			setRefreshing(false);
 		}
 	}
 
 	React.useEffect(() => {
 		loadData();
+
+		return () => {};
 	}, []);
 
 	const wait = (timeout) => {
@@ -114,10 +106,18 @@ export default function TripsSectionedList({ navigation }) {
 	};
 
 	const onRefresh = React.useCallback(() => {
-		setRefreshing(true);
 		loadData();
-		wait(2000).then(() => setRefreshing(false));
 	}, []);
+
+	if (!refreshing && !trips?.length) {
+		return (
+			<View style={styles.container}>
+				<Text style={styles.subtext} medium>
+					Hoziroq safar yarating, mijozlar sizni kutishmoqda 🔥
+				</Text>
+			</View>
+		);
+	}
 
 	return (
 		<SectionList
@@ -163,6 +163,9 @@ const styles = StyleSheet.create({
 		flex: 1,
 		paddingTop: StatusBar.currentHeight,
 		marginHorizontal: 16,
+		flexGrow: 1,
+		justifyContent: "center",
+		alignItems: "center",
 	},
 	item: {
 		padding: 20,
@@ -211,5 +214,10 @@ const styles = StyleSheet.create({
 	},
 	statusActive: {
 		color: "#6FCF97",
+	},
+	subtext: {
+		fontSize: 18,
+		paddingHorizontal: 20,
+		textAlign: "center",
 	},
 });
