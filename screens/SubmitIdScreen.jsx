@@ -95,7 +95,12 @@ export default function SubmitIdScreen({ navigation }) {
 			</Button> */}
 
 			<Button
-				onPress={() => navigation.navigate("SubmitPhotoScreen")}
+				disabled={!photoOfFrontOfId}
+				onPress={() => {
+					if (photoOfFrontOfId) {
+						navigation.navigate("SubmitPhotoScreen");
+					}
+				}}
 				style={styles.submitButton}
 			>
 				<Text bold light>

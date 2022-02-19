@@ -4,10 +4,17 @@ import {
 	StyleSheet,
 	StatusBar,
 	Pressable,
+	RefreshControl,
 } from "react-native";
 import React from "react";
 import { Text } from "./styledComponents";
 import ArrowIcon from "../images/ArrowIcon";
+import { useOptions } from "../contexts/OptionsContext";
+import TripService from "../api/TripAPI";
+import moment from "moment";
+import _ from "lodash";
+
+moment.locale("uz-UZ");
 
 const DATA = [
 	{
@@ -28,40 +35,96 @@ const DATA = [
 	},
 ];
 
-const Item = ({ index, navigation }) => (
-	<Pressable
-		onPress={() => navigation.navigate("TripDetailScreen")}
-		style={styles.item}
-	>
-		<View>
-			<View style={styles.cityWrapper}>
-				<Text style={styles.cityFirstName} semiBold>
-					Toshkent
-				</Text>
-				<ArrowIcon />
-				<Text style={styles.citySecondName} semiBold>
-					Samarqand
-				</Text>
+const Item = ({ item, navigation }) => {
+	return (
+		<Pressable
+			onPress={() => navigation.navigate("TripDetailScreen")}
+			style={styles.item}
+		>
+			<View>
+				<View style={styles.cityWrapper}>
+					<Text style={styles.cityFirstName} semiBold>
+						{item.leave_region.city_name}
+					</Text>
+					<ArrowIcon />
+					<Text style={styles.citySecondName} semiBold>
+						{item.come_region.city_name}
+					</Text>
+				</View>
+				<View style={styles.optionsWrapper}>
+					<Text medium style={styles.optionsName}>
+						Bo’sh joy:{" "}
+						<Text>
+							{
+								item.car_seats_statuses.filter(
+									(e) => e.status == "ACTIVE"
+								).length
+							}{" "}
+							ta
+						</Text>
+					</Text>
+					<Text medium style={styles.optionsName}>
+						Vaqti:{" "}
+						<Text>{moment(item.trip_time).format("LT")}</Text>
+					</Text>
+				</View>
 			</View>
-			<View style={styles.optionsWrapper}>
-				<Text medium style={styles.optionsName}>
-					Bo’sh joy: <Text>2 ta</Text>
-				</Text>
-				<Text medium style={styles.optionsName}>
-					Vaqti: <Text>06:00</Text>
-				</Text>
-			</View>
-		</View>
-		<Text style={styles.statusActive} medium>
-			Aktiv
-		</Text>
-	</Pressable>
-);
+			<Text style={styles.statusActive} medium>
+				{item.trip_status == "WAITING" ? "Aktiv" : "Tugagan"}
+			</Text>
+		</Pressable>
+	);
+};
 
 export default function TripsSectionedList({ navigation }) {
+	const [options] = useOptions();
+	const [trips, setTrips] = React.useState([]);
+	const [refreshing, setRefreshing] = React.useState(false);
+
+	async function loadData() {
+		let data = await TripService.getTrips(options?.token);
+		if (data.ok) {
+			if (data.data.trip) {
+				let arr = data.data.trip;
+				arr = arr.map((e) => {
+					return {
+						...e,
+						trip_etime: moment(e.trip_time).format("LL"),
+					};
+				});
+				arr = _.groupBy(arr, (e) => e.trip_etime);
+				let a = [];
+				for (const item in arr) {
+					a.push({
+						title: item,
+						data: arr[item],
+					});
+				}
+				setTrips(a);
+			}
+		}
+	}
+
+	React.useEffect(() => {
+		loadData();
+	}, []);
+
+	const wait = (timeout) => {
+		return new Promise((resolve) => setTimeout(resolve, timeout));
+	};
+
+	const onRefresh = React.useCallback(() => {
+		setRefreshing(true);
+		loadData();
+		wait(2000).then(() => setRefreshing(false));
+	}, []);
+
 	return (
 		<SectionList
-			sections={DATA}
+			sections={trips}
+			refreshControl={
+				<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+			}
 			keyExtractor={(item, index) => item + index}
 			renderItem={({
 				item,
@@ -72,7 +135,11 @@ export default function TripsSectionedList({ navigation }) {
 			}) => {
 				return (
 					<View>
-						<Item navigation={navigation} title={item} />
+						<Item
+							navigation={navigation}
+							title={item}
+							item={item}
+						/>
 						{index !== dataLength - 1 && (
 							<View style={styles.pale} />
 						)}

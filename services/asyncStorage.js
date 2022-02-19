@@ -2,15 +2,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const storeDataToAsyncStorage = async (key, value) => {
 	try {
-		await AsyncStorage.setItem(key, value);
+		return await AsyncStorage.setItem(key, value);
 	} catch (e) {
 		console.log("ErrorAsync", e);
 	}
 };
 
-export const getDataFromAsyncStorage = async () => {
+export const getDataFromAsyncStorage = async (data) => {
 	try {
-		const value = await AsyncStorage.getItem("@storage_Key");
+		const value = await AsyncStorage.getItem(data);
 		return value;
 	} catch (e) {
 		// error reading value

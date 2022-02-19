@@ -20,7 +20,7 @@ export default function SubmitPhotoScreen({ navigation }) {
 			mediaTypes: ImagePicker.MediaTypeOptions.Images,
 			allowsEditing: true,
 			aspect: [4, 3],
-			quality: 1,
+			quality: 0.3,
 		});
 
 		if (!result.cancelled) {
@@ -34,13 +34,11 @@ export default function SubmitPhotoScreen({ navigation }) {
 
 	const apply = async () => {
 		setLoading(true);
-		console.log("test");
 
 		try {
 			if (!options?.car_photo) {
 				return;
 			}
-
 			let result = await AuthService.sendApplyToRegistration(
 				options?.brand_id,
 				options?.brand_color,
@@ -54,15 +52,24 @@ export default function SubmitPhotoScreen({ navigation }) {
 				result.ok ||
 				result?.message?.startsWith("#is_confirmed:false")
 			) {
-				navigation.navigate("WaitStatusScreen");
 				await storeDataToAsyncStorage("driver", "not");
+				setOptions({
+					...options,
+				});
+				navigation.navigate("WaitStatusScreen");
 			} else if (result?.message?.startsWith("#is_confirmed:true")) {
-				navigation.navigate("TabBarNavigator");
 				await storeDataToAsyncStorage("driver", "confirmed");
+
+				setOptions({
+					...options,
+					driver: "confirmed",
+				});
+				navigation.navigate("TabBarNavigator");
 			} else {
 				Alert.alert("Xatolik", result?.message);
 			}
 		} catch (error) {
+			console.log(error + "");
 		} finally {
 			setLoading(false);
 		}
@@ -132,12 +139,16 @@ export default function SubmitPhotoScreen({ navigation }) {
 			<Text medium>Mashinaning raqami</Text>
 
 			<Button
-				disabled={loading}
-				onPress={() => apply()}
+				disabled={loading || !carPhoto}
+				onPress={() => {
+					if (carPhoto) {
+						apply();
+					}
+				}}
 				style={styles.submitButton}
 			>
 				<Text bold light>
-					Davom ettirish
+					{loading ? "Fayllar yuklanmoqda..." : "Yakunlash"}
 				</Text>
 			</Button>
 		</Container>

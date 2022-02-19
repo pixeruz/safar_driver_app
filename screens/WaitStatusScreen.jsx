@@ -1,9 +1,37 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
+import UsersService from "../api/UsersAPI";
 import { Button, Container, Input, Text } from "../components/styledComponents";
+import { useOptions } from "../contexts/OptionsContext";
 import Logo from "../images/Logo";
+import { storeDataToAsyncStorage } from "../services/asyncStorage";
 
 export default function WaitStatusScreen({ navigation }) {
+	const [options] = useOptions();
+	const [loading, setLoading] = React.useState();
+	const check = async () => {
+		setLoading(true);
+		try {
+			let user = await UsersService.getProfile(options?.token);
+			if (user?.data?.driver?.is_confirmed) {
+				await storeDataToAsyncStorage("driver", "confirmed");
+				navigation.replace("TabBarNavigator");
+			} else {
+				await storeDataToAsyncStorage("driver", "not");
+			}
+		} catch (e) {
+			console.log("Error", e + "");
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	React.useEffect(() => {
+		check();
+
+		return () => {};
+	}, []);
+
 	return (
 		<Container>
 			<View style={styles.logoView}>
@@ -18,11 +46,14 @@ export default function WaitStatusScreen({ navigation }) {
 			</Text>
 
 			<Button
-				onPress={() => navigation.replace("TabBarNavigator")}
+				disabled={loading}
+				onPress={() => {
+					check();
+				}}
 				style={styles.signUpButton}
 			>
 				<Text bold light>
-					Yangilash
+					{loading ? "Tekshirilmoqda" : "Yangilash"}
 				</Text>
 			</Button>
 		</Container>
