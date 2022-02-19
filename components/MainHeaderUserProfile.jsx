@@ -1,12 +1,31 @@
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
+import UsersService from "../api/UsersAPI";
+import { useOptions } from "../contexts/OptionsContext";
 import { Text } from "./styledComponents";
 
 export default function MainHeaderUserProfile() {
+	const [options, setOptions] = useOptions();
+	const loadUser = async () => {
+		try {
+			let user = await UsersService.getProfile(options?.token);
+			if (user?.data?.user?.user_name) {
+				setOptions({
+					...options,
+					name: user?.data?.user?.user_name,
+				});
+			}
+		} catch (error) {}
+	};
+
+	React.useEffect(() => {
+		loadUser();
+		return () => {};
+	}, []);
 	return (
 		<View style={styles.container}>
 			<Image
-				source={{ uri: "https://picsum.photos/400" }}
+				source={require("../images/nophoto.png")}
 				width={64}
 				height={64}
 				style={styles.profileImage}
@@ -16,7 +35,7 @@ export default function MainHeaderUserProfile() {
 					Xayrli kun,
 				</Text>
 				<Text style={styles.name} bold>
-					Muhammadyunus Yusupov
+					{options?.name || "Hurmatli haydovchi"}
 				</Text>
 			</View>
 		</View>
