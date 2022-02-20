@@ -17,7 +17,12 @@ export default function HomeScreen({ navigation }) {
 				</Text>
 			</View>
 			<Button
-				onPress={() => navigation.navigate("AddTripScreen")}
+				onPress={() =>
+					navigation.navigate("AddTripScreen", {
+						screen: "AddTripProperties",
+						initial: false,
+					})
+				}
 				style={styles.floatingButton}
 			>
 				<PlusIcon />
