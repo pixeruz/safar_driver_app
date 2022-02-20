@@ -51,7 +51,14 @@ const Item = ({ item, navigation }) => {
 					</Text>
 				</View>
 			</View>
-			<Text style={styles.statusActive} medium>
+			<Text
+				style={
+					item.trip_status == "WAITING"
+						? styles.statusActive
+						: styles.statusInactive
+				}
+				medium
+			>
 				{item.trip_status == "WAITING" ? "Aktiv" : "Tugagan"}
 			</Text>
 		</Pressable>
@@ -214,6 +221,9 @@ const styles = StyleSheet.create({
 	},
 	statusActive: {
 		color: "#6FCF97",
+	},
+	statusInactive: {
+		color: "red",
 	},
 	subtext: {
 		fontSize: 18,
