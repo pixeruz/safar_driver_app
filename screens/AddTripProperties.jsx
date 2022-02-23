@@ -10,13 +10,22 @@ import {
 import CalendarIcon from "../images/CalendarIcon";
 import TimeIcon from "../images/TimeIcon";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import moment from "moment";
+import { useOptions } from "../contexts/OptionsContext";
+
+moment.locale("uz-latin"); // en
 
 export default function AddTripProperties({ navigation }) {
+	const [options, setOptions] = useOptions();
 	const [invisibleDate, setInvisibleDate] = React.useState(false);
-	const [selectedDate, setSelectedDate] = React.useState("");
+	const [selectedDate, setSelectedDate] = React.useState(
+		options?.selectedDate
+	);
 
 	const [invisibleTime, setInvisibleTime] = React.useState(false);
-	const [selectedTime, setSelectedTime] = React.useState("");
+	const [selectedTime, setSelectedTime] = React.useState(
+		options?.selectedTime
+	);
 
 	const showDatePicker = () => {
 		setDatePickerVisibility(true);
@@ -32,11 +41,19 @@ export default function AddTripProperties({ navigation }) {
 
 	const handleConfirmDate = (date) => {
 		setSelectedDate(date);
+		setOptions({
+			...options,
+			selectedDate: date,
+		});
 		hideDatePicker();
 	};
 
 	const handleConfirmTime = (date) => {
 		setSelectedTime(date);
+		setOptions({
+			...options,
+			selectedTime: date,
+		});
 		hideTimePicker();
 	};
 
@@ -53,14 +70,21 @@ export default function AddTripProperties({ navigation }) {
 					Qaysi shahardan?
 				</Text>
 				<Button
-					onPress={() => navigation.navigate("CitiesScreen")}
+					onPress={() =>
+						navigation.navigate("CitiesScreen", {
+							type: "from",
+						})
+					}
 					style={{
 						...defaultStyles.defaultInputStyles,
 						...styles.inputableButton,
 					}}
 				>
 					<Text>
-						<Text style={{ color: "#9BA1A7" }}>Qaysi</Text> dan
+						<Text style={{ color: "#9BA1A7" }}>
+							{options?.from ? options?.from?.city_name : "Qaysi"}
+						</Text>{" "}
+						dan
 					</Text>
 				</Button>
 			</View>
@@ -69,14 +93,21 @@ export default function AddTripProperties({ navigation }) {
 					Qaysi shaharga?
 				</Text>
 				<Button
-					onPress={() => navigation.navigate("CitiesScreen")}
+					onPress={() =>
+						navigation.navigate("CitiesScreen", {
+							type: "to",
+						})
+					}
 					style={{
 						...defaultStyles.defaultInputStyles,
 						...styles.inputableButton,
 					}}
 				>
 					<Text>
-						<Text style={{ color: "#9BA1A7" }}>Qaysi</Text> ga
+						<Text style={{ color: "#9BA1A7" }}>
+							{options?.to ? options?.to?.city_name : "Qaysi"}
+						</Text>{" "}
+						ga
 					</Text>
 				</Button>
 			</View>
@@ -94,7 +125,9 @@ export default function AddTripProperties({ navigation }) {
 					}}
 				>
 					<Text style={styles.buttonText}>
-						{selectedDate.toString() || "Vaqtni kiriting"}
+						{selectedDate
+							? moment(selectedDate).format("ll")
+							: "Sanani kiriting"}
 					</Text>
 
 					<CalendarIcon />
@@ -114,7 +147,9 @@ export default function AddTripProperties({ navigation }) {
 					}}
 				>
 					<Text style={styles.buttonText}>
-						{selectedTime.toString() || "Vaqtni tanlang"}
+						{selectedTime
+							? moment(selectedTime).format("HH:mm")
+							: "Vaqtni tanlang"}
 					</Text>
 					<TimeIcon />
 				</Button>
@@ -122,6 +157,14 @@ export default function AddTripProperties({ navigation }) {
 			<Button
 				onPress={() => navigation.navigate("SelectSeat")}
 				style={styles.signUpButton}
+				disabled={
+					!(
+						options?.from &&
+						options?.to &&
+						selectedDate &&
+						selectedTime
+					)
+				}
 			>
 				<Text bold light>
 					Davom ettirish
