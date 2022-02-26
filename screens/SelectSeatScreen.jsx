@@ -2,17 +2,28 @@ import React from "react";
 import { View, StyleSheet, Pressable } from "react-native";
 import Checkbox from "../components/Checkbox";
 import { Button, Container, Input, Text } from "../components/styledComponents";
+import { useOptions } from "../contexts/OptionsContext";
 
 export default function SelectSeatScreen({ navigation }) {
+	const [options, setOptions] = useOptions();
+
 	const initState = {
 		active: false,
 		rate: "",
 	};
 
-	const [seatOne, setSeatOne] = React.useState(initState);
-	const [seatTwo, setSeatTwo] = React.useState(initState);
-	const [seatThree, setSeatThree] = React.useState(initState);
-	const [seatFour, setSeatFour] = React.useState(initState);
+	const [seatOne, setSeatOne] = React.useState(
+		options?.seats[0] || initState
+	);
+	const [seatTwo, setSeatTwo] = React.useState(
+		options?.seats[1] || initState
+	);
+	const [seatThree, setSeatThree] = React.useState(
+		options?.seats[2] || initState
+	);
+	const [seatFour, setSeatFour] = React.useState(
+		options?.seats[3] || initState
+	);
 
 	return (
 		<Container scroll>
@@ -25,30 +36,43 @@ export default function SelectSeatScreen({ navigation }) {
 			</Text>
 
 			<OneSeatComponent
+				index={0}
 				data={seatOne}
 				setData={setSeatOne}
 				name="Haydovchi oldi o’rindig’i"
 			/>
 
 			<OneSeatComponent
+				index={1}
 				data={seatTwo}
 				setData={setSeatTwo}
 				name="Orqa chap o’rindiq"
 			/>
 
 			<OneSeatComponent
+				index={2}
 				data={seatThree}
 				setData={setSeatThree}
 				name="Orqa o’rta o’rindiq"
 			/>
 
 			<OneSeatComponent
+				index={3}
 				data={seatFour}
 				setData={setSeatFour}
 				name="Orqa o’ng o’rindiq"
 			/>
 
+			<Text style={styles.helper}>
+				Barcha o'rinlarga bir xil narx belgilash uchun old o'rindiqqa
+				narx belgilagach, "Davom ettirish" tugmasini uzoqroq bosib
+				turing.
+			</Text>
+
 			<Button
+				disabled={
+					!options?.seats?.filter((e) => e.active && e.rate).length
+				}
 				onPress={() => navigation.navigate("SelectTripOptions")}
 				style={styles.signUpButton}
 			>
@@ -60,8 +84,32 @@ export default function SelectSeatScreen({ navigation }) {
 	);
 }
 
-function OneSeatComponent({ name, data, setData }) {
+function OneSeatComponent({ name, data, setData, index }) {
+	const [options, setOptions] = useOptions();
 	const inputRef = React.useRef();
+
+	React.useEffect(() => {
+		if (data.rate) {
+			if (options?.seats && Array.isArray(options?.seats)) {
+				options.seats[index] = data;
+				setOptions({
+					...options,
+				});
+			} else {
+				let s = [];
+				s[index] = data;
+				setOptions({
+					...options,
+					seats: s,
+				});
+			}
+		} else {
+			options.seats[index] = data;
+			setOptions({
+				...options,
+			});
+		}
+	}, [data]);
 
 	return (
 		<Pressable
@@ -86,11 +134,11 @@ function OneSeatComponent({ name, data, setData }) {
 						placeholder={data.active ? "Narx" : "Yoqilmagan"}
 						placeholderTextColor="#9BA1A7"
 						maxLength={7}
-						onBlur={(e) =>
-							data.rate == ""
-								? setData({ ...data, active: false })
-								: null
-						}
+						onBlur={(e) => {
+							if (data.rate == "") {
+								setData({ ...data, active: false });
+							}
+						}}
 						onChangeText={(e) => setData({ ...data, rate: e })}
 						value={data.rate}
 						keyboardType="decimal-pad"
@@ -127,6 +175,13 @@ const styles = StyleSheet.create({
 		lineHeight: 22,
 		color: "#73787D",
 	},
+	helper: {
+		fontSize: 12,
+		lineHeight: 22,
+		color: "#73787D",
+		marginTop: 20,
+	},
+
 	space: {
 		backgroundColor: "#F7F8F9",
 		flexGrow: 1,
