@@ -1,11 +1,73 @@
 import React from "react";
 import { View, StyleSheet, Pressable } from "react-native";
 import { Button, Container, Input, Text } from "../components/styledComponents";
+import { useOptions } from "../contexts/OptionsContext";
+import moment from "moment";
+import TripService from "../api/TripAPI";
 
 export default function SelectTripOptions({ navigation }) {
-	const [smoke, setSmoke] = React.useState(true);
-	const [air, setAir] = React.useState(true);
-	const [baggage, setBaggage] = React.useState(true);
+	const [smoke, setSmoke] = React.useState(options?.smoke || false);
+	const [air, setAir] = React.useState(options?.air || false);
+	const [baggage, setBaggage] = React.useState(options?.baggage || true);
+	const [loading, setLoading] = React.useState(false);
+	const [options, setOptions] = useOptions();
+
+	React.useEffect(() => {
+		setOptions({
+			...options,
+			smoke,
+			air,
+			baggage,
+		});
+	}, [smoke, air, baggage]);
+
+	const submit = async () => {
+		setLoading(true);
+
+		try {
+			if (
+				options &&
+				options?.token &&
+				options?.to &&
+				options?.from &&
+				options?.seats?.length
+			) {
+				let date = options?.selectedDate?.toLocaleDateString();
+				let time = options?.selectedTime?.toLocaleTimeString();
+				let mainTime = moment(
+					moment(`${date} ${time}`, `YYYY-MM-DD HH:mm:ss a`)
+				).toLocaleString();
+
+				let sortSeats = options?.seats?.map((item) => {
+					return [
+						item?.active && item?.rate ? "ACTIVE" : "ORDERED",
+						item?.rate || 0,
+					];
+				});
+
+				let trip = await TripService.createTrip(
+					options?.token,
+					options?.from?.city_id,
+					options?.to?.city_id,
+					sortSeats,
+					mainTime,
+					options?.smoke,
+					options?.air,
+					options?.baggage
+				);
+
+				if (trip.ok && trip?.data?.ok) {
+					navigation.navigate("SuccessfullyCreated", {
+						data: trip.data,
+					});
+				}
+			}
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setLoading(false);
+		}
+	};
 	// const []
 
 	return (
@@ -22,11 +84,12 @@ export default function SelectTripOptions({ navigation }) {
 			<OneOptionRow title="Konditsioner" data={air} setData={setAir} />
 
 			<Button
-				onPress={() => navigation.navigate("SuccessfullyCreated")}
+				// disabled={loading}
+				onPress={() => submit()}
 				style={styles.signUpButton}
 			>
 				<Text bold light>
-					Yo’nalish yaratish
+					{!loading ? "Yo’nalish yaratish" : "Yuklanmoqda"}
 				</Text>
 			</Button>
 		</Container>
@@ -39,14 +102,14 @@ function OneOptionRow({ title, data, setData }) {
 			<Text medium>{title}</Text>
 			<View style={styles.selectWrapper}>
 				<Pressable
-					onPress={() => setData(!data)}
-					style={data ? styles.selectActive : styles.select}
+					onPress={() => setData(false)}
+					style={!data ? styles.selectActive : styles.select}
 				>
 					<Text medium>Yo'q</Text>
 				</Pressable>
 				<Pressable
-					onPress={() => setData(!data)}
-					style={data ? styles.select : styles.selectActive}
+					onPress={() => setData(true)}
+					style={!data ? styles.select : styles.selectActive}
 				>
 					<Text medium>Bor</Text>
 				</Pressable>

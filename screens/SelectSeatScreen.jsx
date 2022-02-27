@@ -1,5 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Pressable } from "react-native";
+import TripService from "../api/TripAPI";
 import Checkbox from "../components/Checkbox";
 import { Button, Container, Input, Text } from "../components/styledComponents";
 import { useOptions } from "../contexts/OptionsContext";
@@ -13,16 +14,16 @@ export default function SelectSeatScreen({ navigation }) {
 	};
 
 	const [seatOne, setSeatOne] = React.useState(
-		options?.seats[0] || initState
+		(options?.seats && options?.seats[0]) || initState
 	);
 	const [seatTwo, setSeatTwo] = React.useState(
-		options?.seats[1] || initState
+		(options?.seats && options?.seats[1]) || initState
 	);
 	const [seatThree, setSeatThree] = React.useState(
-		options?.seats[2] || initState
+		(options?.seats && options?.seats[2]) || initState
 	);
 	const [seatFour, setSeatFour] = React.useState(
-		options?.seats[3] || initState
+		(options?.seats && options?.seats[3]) || initState
 	);
 
 	return (
@@ -89,26 +90,12 @@ function OneSeatComponent({ name, data, setData, index }) {
 	const inputRef = React.useRef();
 
 	React.useEffect(() => {
-		if (data.rate) {
-			if (options?.seats && Array.isArray(options?.seats)) {
-				options.seats[index] = data;
-				setOptions({
-					...options,
-				});
-			} else {
-				let s = [];
-				s[index] = data;
-				setOptions({
-					...options,
-					seats: s,
-				});
-			}
-		} else {
-			options.seats[index] = data;
-			setOptions({
-				...options,
-			});
-		}
+		options.seats = options?.seats || [];
+		options.seats[index] = data;
+		setOptions({
+			...options,
+		});
+		console.log(options);
 	}, [data]);
 
 	return (
