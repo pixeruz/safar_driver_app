@@ -56,7 +56,7 @@ export default function SelectTripOptions({ navigation }) {
 					options?.baggage
 				);
 
-				if (trip.ok && trip?.data?.ok) {
+				if (trip?.ok) {
 					navigation.navigate("SuccessfullyCreated", {
 						data: trip.data,
 					});

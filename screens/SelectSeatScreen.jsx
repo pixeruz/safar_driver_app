@@ -95,7 +95,6 @@ function OneSeatComponent({ name, data, setData, index }) {
 		setOptions({
 			...options,
 		});
-		console.log(options);
 	}, [data]);
 
 	return (

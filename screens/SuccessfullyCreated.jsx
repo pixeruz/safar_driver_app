@@ -6,8 +6,14 @@ import ArrowIcon from "../images/ArrowIcon";
 import UserGroupIcon from "../images/UserGroup";
 import CalendarIcon from "../images/CalendarIcon";
 import TimeIcon from "../images/TimeIcon";
+import { useOptions } from "../contexts/OptionsContext";
+import moment from "moment";
 
-export default function SuccessfullyCreated({ navigation }) {
+export default function SuccessfullyCreated({ navigation, route }) {
+	const { data } = route.params;
+	const [options] = useOptions();
+	moment.locale("uz-latn");
+
 	return (
 		<>
 			<Container scroll>
@@ -17,30 +23,42 @@ export default function SuccessfullyCreated({ navigation }) {
 				<View style={styles.info}>
 					<LocationIcon />
 					<Text style={styles.cityNames} semiBold>
-						Toshkent
+						{data.trip.leave_region.city_name}
 					</Text>
 					<ArrowIcon />
 					<Text style={styles.cityNames} semiBold>
-						Qo'qon
+						{data.trip.come_region.city_name}
 					</Text>
 				</View>
 				<View style={styles.pale}></View>
 				<View style={styles.detailSection}>
 					<Image
-						source={{ uri: "https://picsum.photos/400" }}
+						source={
+							options?.image
+								? {
+										uri:
+											"https://safar.pixer.uz/api/cars/uploads/" +
+											options?.image,
+								  }
+								: require("../images/nophoto.png")
+						}
 						width={92}
 						height={68}
 						style={styles.image}
 					/>
 					<View>
 						<Text style={styles.carName} semiBold>
-							Chevrolet Gentra
+							{data?.trip?.driver.car?.cars_list?.car_name}
 						</Text>
 						<Text style={styles.userName} semiBold>
-							Abdurahmon
+							{data?.trip?.driver.car?.cars_list?.car_name}
 						</Text>
 						<Text style={styles.topPrice} semiBold>
-							120 000 so’m
+							{
+								data.seats.sort(
+									(a, b) => a.rate - 0 - (b.rate - 0)
+								)[0].rate
+							}
 						</Text>
 					</View>
 				</View>
@@ -50,21 +68,30 @@ export default function SuccessfullyCreated({ navigation }) {
 						<Text semiBold style={styles.infoGroupItemTitle}>
 							Nechta kishi:
 						</Text>
-						<Text style={styles.infoGroupItemText}>1 kishi</Text>
+						<Text style={styles.infoGroupItemText}>
+							{
+								data.seats.filter((e) => e.status == "ACTIVE")
+									.length
+							}
+						</Text>
 					</View>
 					<View style={styles.infoGroup}>
 						<CalendarIcon />
 						<Text semiBold style={styles.infoGroupItemTitle}>
 							Sana:
 						</Text>
-						<Text style={styles.infoGroupItemText}>14-dekabr</Text>
+						<Text style={styles.infoGroupItemText}>
+							{moment(data.trip.trip_time).format("LL")}
+						</Text>
 					</View>
 					<View style={styles.infoGroup}>
 						<TimeIcon />
 						<Text semiBold style={styles.infoGroupItemTitle}>
 							Vaqti:
 						</Text>
-						<Text style={styles.infoGroupItemText}>16:30</Text>
+						<Text style={styles.infoGroupItemText}>
+							{moment(data.trip.trip_time).format("LT")}
+						</Text>
 					</View>
 				</View>
 			</Container>

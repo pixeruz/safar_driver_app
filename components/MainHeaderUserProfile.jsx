@@ -6,6 +6,7 @@ import { Text } from "./styledComponents";
 
 export default function MainHeaderUserProfile() {
 	const [options, setOptions] = useOptions();
+	const [photo, setPhoto] = React.useState();
 	const loadUser = async () => {
 		try {
 			let user = await UsersService.getProfile(options?.token);
@@ -13,6 +14,11 @@ export default function MainHeaderUserProfile() {
 				setOptions({
 					...options,
 					name: user?.data?.user?.user_name,
+					image:
+						user?.data?.car?.car_images_albums[0].car_image
+							?.photo_id +
+						"." +
+						user?.data?.car?.car_images_albums[0].car_image?.type,
 				});
 			}
 		} catch (error) {}
@@ -25,7 +31,15 @@ export default function MainHeaderUserProfile() {
 	return (
 		<View style={styles.container}>
 			<Image
-				source={require("../images/nophoto.png")}
+				source={
+					options?.image
+						? {
+								uri:
+									"https://safar.pixer.uz/api/cars/uploads/" +
+									options?.image,
+						  }
+						: require("../images/nophoto.png")
+				}
 				width={64}
 				height={64}
 				style={styles.profileImage}

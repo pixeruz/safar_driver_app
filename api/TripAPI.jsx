@@ -23,17 +23,6 @@ export default class TripService {
 		air,
 		baggage
 	) {
-		console.log({
-			leave_region_id,
-			come_region_id,
-			seats,
-			trip_time,
-			is_smoking: smoke,
-			is_luggage: baggage,
-			is_conditioner: air,
-			oil_type: "GAZ",
-			comments: "Nothing is important",
-		});
 		try {
 			let body = JSON.stringify({
 				leave_region_id,
