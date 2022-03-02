@@ -8,8 +8,13 @@ import ArrowIcon from "../images/ArrowIcon";
 import Back from "../images/Back";
 import CalendarIcon from "../images/CalendarIcon";
 import TimeIcon from "../images/TimeIcon";
+import moment from "moment";
 
-export default function TripDetailScreen({ navigation }) {
+export default function TripDetailScreen({ navigation, route }) {
+	moment.locale("uz-latn");
+	const { data } = route.params;
+
+	console.log(data);
 	return (
 		<Container style={styles.container}>
 			<View style={styles.setPadding}>
@@ -23,31 +28,33 @@ export default function TripDetailScreen({ navigation }) {
 			<View style={styles.informations}>
 				<View style={styles.cityWrapper}>
 					<Text style={styles.cityFirstName} semiBold>
-						Toshkent
+						{data?.leave_region?.city_name}
 					</Text>
 					<ArrowIcon />
 					<Text style={styles.citySecondName} semiBold>
-						Samarqand
+						{data?.come_region?.city_name}
 					</Text>
 				</View>
 				<View style={styles.optionsWrapper}>
 					<View style={styles.status}>
 						<Text semiBold style={styles.statusActive}>
-							Faol
+							{data?.trip_status == "WAITING"
+								? "Faol"
+								: "Tugatilgan"}
 						</Text>
 					</View>
 
 					<View style={styles.options}>
 						<TimeIcon />
 						<Text style={styles.optionsName} semiBold>
-							06:00
+							{moment(data?.trip_time).format("LT")}
 						</Text>
 					</View>
 
 					<View style={styles.options}>
 						<CalendarIcon />
 						<Text style={styles.optionsName} semiBold>
-							21-fevral, 2022
+							{moment(data?.trip_time).format("LL")}
 						</Text>
 					</View>
 				</View>
@@ -55,9 +62,12 @@ export default function TripDetailScreen({ navigation }) {
 			<Pale />
 			<ScrollView>
 				<View style={styles.tripOptionWrapper}>
-					<TripOption name="Chekish" answer />
-					<TripOption name="Bagaj" />
-					<TripOption name="Konditsioner" />
+					<TripOption name="Chekish" answer={data?.is_smoking} />
+					<TripOption name="Bagaj" answer={data?.is_luggage} />
+					<TripOption
+						name="Konditsioner"
+						answer={data?.is_conditioner}
+					/>
 				</View>
 
 				<View style={styles.seatsSection}>
@@ -68,25 +78,26 @@ export default function TripDetailScreen({ navigation }) {
 						style={{ marginVertical: 15 }}
 						source={require("../images/debug.png")}
 					/>
-					<SeatOption
-						name="Haydovchi oldi"
-						price="140 000 so'm"
-						isBooked
-					/>
-					<SeatOption
-						name="Orqa o'ng o'rindiq"
-						price="120 000 so'm"
-					/>
-					<SeatOption
-						name="Orqa o'rta o'rindiq"
-						price="100 000 so'm"
-						isBooked
-					/>
-					<SeatOption
-						name="Orqa chap o'rindiq"
-						price="100 000 so'm"
-						isBooked
-					/>
+
+					{data?.car_seats_statuses
+						?.filter((e) => e.status == "ACTIVE")
+						?.sort((a, b) => a.index - b.index)
+						.map((seat, i) => (
+							<SeatOption
+								key={i}
+								name={
+									seat.index == 1
+										? "Haydovchi oldi"
+										: seat.index == 2
+										? "Orqa o'ng taraf"
+										: seat.index == 3
+										? "Orqa o'rta"
+										: "Orqa chap taraf"
+								}
+								price={seat.price + " so'm"}
+								isBooked={seat.status == "ORDERED"}
+							/>
+						))}
 				</View>
 				<Pale />
 				<View style={styles.seatsSection}>

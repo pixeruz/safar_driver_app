@@ -20,7 +20,11 @@ moment.locale("uz-UZ");
 const Item = ({ item, navigation }) => {
 	return (
 		<Pressable
-			onPress={() => navigation.navigate("TripDetailScreen")}
+			onPress={() =>
+				navigation.navigate("TripDetailScreen", {
+					data: item,
+				})
+			}
 			style={styles.item}
 		>
 			<View>
