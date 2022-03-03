@@ -71,4 +71,16 @@ export default class TripService {
 			console.log(error);
 		}
 	}
+
+	static async getRequests(token) {
+		let response = await fetch(SERVER_URL + "/api/trips/requests", {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token,
+			},
+		});
+		response = await response.json();
+		return response;
+	}
 }
