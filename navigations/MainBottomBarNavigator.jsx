@@ -6,6 +6,7 @@ import NotificationIcon from "../images/NotificationIcon";
 import ProfileIcon from "../images/ProfileIcon";
 import { Dimensions } from "react-native";
 import NotificationsScreen from "../screens/NotificationsScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -51,7 +52,7 @@ export default function MainBottomBarNavigator() {
 			/>
 			<Tab.Screen
 				name="ProfileScreen"
-				component={HomeScreen}
+				component={ProfileScreen}
 				options={{
 					tabBarIcon: ({ focused, color, size }) => {
 						return <ProfileIcon active={focused} />;

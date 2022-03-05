@@ -24,7 +24,31 @@ const { width, height } = Dimensions.get("screen");
 
 moment.locale("uz-UZ");
 
-const Item = ({ item, navigation }) => {
+const Item = ({ item, navigation, trips, setTrips, index }) => {
+	const [loading, setLoading] = React.useState(false);
+	const [options, setOptions] = useOptions();
+
+	const submit = async (status) => {
+		setLoading(true);
+		try {
+			let data = await TripService.submitTripRequest(
+				options?.token,
+				item.ordered_seat_id,
+				status,
+				item.tripper_id
+			);
+			console.log(data);
+			if (data.ok) {
+				trips.splice(index, 1);
+				setTrips([...trips]);
+			}
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	return (
 		<View style={styles.item}>
 			<Image
@@ -38,43 +62,65 @@ const Item = ({ item, navigation }) => {
 			<View style={styles.informations}>
 				<View style={styles.cityWrapper}>
 					<Text style={styles.cityFirstName} semiBold>
-						kok
+						{
+							item.car_seats_status.driver_trip.leave_region
+								.city_name
+						}
 					</Text>
 					<ArrowIcon />
 					<Text style={styles.citySecondName} semiBold>
-						tash
+						{
+							item.car_seats_status.driver_trip.come_region
+								.city_name
+						}
 					</Text>
 				</View>
 				<View style={styles.optionsWrapper}>
 					<View style={styles.options}>
 						<TimeIcon />
 						<Text style={styles.optionsName} semiBold>
-							{/* {moment(data?.trip_time).format("LT")} */}222
+							{moment(
+								item.car_seats_status.driver_trip.createdAt
+							).format("LT")}
 						</Text>
 					</View>
 
 					<View style={styles.options}>
 						<CalendarIcon />
 						<Text style={styles.optionsName} semiBold>
-							{/* {moment(data?.trip_time).format("LL")} */}222
+							{moment(
+								item.car_seats_status.driver_trip.createdAt
+							).format("LL")}
 						</Text>
 					</View>
 				</View>
 				<Text medium style={styles.position}>
-					Haydovchi oldi o'rindi'gi
+					{item?.car_seats_status?.index == 0
+						? "Haydovchi oldi"
+						: item?.car_seats_status?.index == 1
+						? "Orqa chap o'rindiq"
+						: item?.car_seats_status?.index == 2
+						? "Orqa o'rta"
+						: "Orqa o'ng"}
 				</Text>
 				<Text style={styles.alertText}>
 					Ushbu yo’nalisingizni bron qilishga ariza yuborildi.
-					Yuboruvchi:{" "}
-					<Text style={styles.alertTextName}>Abbos Jamolov</Text>
 				</Text>
 				<View style={styles.buttons}>
-					<Button style={styles.redbutton}>
+					<Button
+						disabled={loading}
+						onPress={() => submit("cancel")}
+						style={styles.redbutton}
+					>
 						<Text medium style={{ color: "#EB5757" }}>
 							Bekor qilish
 						</Text>
 					</Button>
-					<Button style={styles.confirmbutton}>
+					<Button
+						onPress={() => submit("accept")}
+						disabled={loading}
+						style={styles.confirmbutton}
+					>
 						<Text medium style={{ color: "white" }}>
 							Tasdiqlash
 						</Text>
@@ -87,7 +133,7 @@ const Item = ({ item, navigation }) => {
 
 export default function NotificationsList({ navigation }) {
 	const [options] = useOptions();
-	const [trips, setTrips] = React.useState(["1", "2"]);
+	const [trips, setTrips] = React.useState([]);
 	const [refreshing, setRefreshing] = React.useState(false);
 	const [loading, setLoading] = React.useState(false);
 
@@ -96,7 +142,9 @@ export default function NotificationsList({ navigation }) {
 
 		try {
 			let requests = await TripService.getRequests(options?.token);
-			console.log(requests);
+			if (requests.data.seats.rows) {
+				setTrips(requests.data.seats.rows);
+			}
 		} catch (error) {
 		} finally {
 			setRefreshing(false);
@@ -140,6 +188,9 @@ export default function NotificationsList({ navigation }) {
 							navigation={navigation}
 							title={item}
 							item={item}
+							trips={trips}
+							index={index}
+							setTrips={setTrips}
 						/>
 						{index !== trips.length - 1 && (
 							<View style={styles.pale} />

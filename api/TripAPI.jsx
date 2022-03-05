@@ -72,6 +72,32 @@ export default class TripService {
 		}
 	}
 
+	static async submitTripRequest(token, seat_id, status, tripper) {
+		try {
+			let response = await fetch(
+				// localhost:5771/api/trips/accept/:seat_id
+
+				SERVER_URL + `/api/trips/accept/${seat_id}`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: token,
+					},
+					body: JSON.stringify({
+						status,
+						tripper,
+					}),
+				}
+			);
+
+			response = await response.json();
+			return response;
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
 	static async getRequests(token) {
 		let response = await fetch(SERVER_URL + "/api/trips/requests", {
 			method: "GET",
