@@ -13,6 +13,7 @@ import CustomAddTripNavigator from "./CustomAddTripNavigator";
 import CitiesScreen from "../screens/CitiesScreen";
 import SuccessfullyCreated from "../screens/SuccessfullyCreated";
 import { useOptions } from "../contexts/OptionsContext";
+import CarBrandsScreen from "../screens/CarBrandsScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -87,6 +88,15 @@ function MainStackNavigator() {
 					title: "Shahar tanlash",
 				}}
 				component={CitiesScreen}
+			/>
+			<Stack.Screen
+				name="CarBrandsScreen"
+				options={{
+					headerShown: true,
+					header: MainStackNavigatorHeader,
+					title: "Marka tanlash",
+				}}
+				component={CarBrandsScreen}
 			/>
 			<Stack.Screen
 				name="WaitStatusScreen"

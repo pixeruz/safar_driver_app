@@ -4,10 +4,10 @@ import CloseIcon from "../images/Close";
 import { Button, Text } from "./styledComponents";
 import * as Linking from "expo-linking";
 
-export default function ModalUserInfo({ visibility, setVisibility }) {
+export default function ModalUserInfo({ visibility, setVisibility, user }) {
 	const _OpenPhone = () => {
-		if (Linking.canOpenURL("tel:+99897378899")) {
-			Linking.openURL("tel:+99897378899");
+		if (Linking.canOpenURL("tel:+" + user?.user_phone)) {
+			Linking.openURL("tel:+" + user?.user_phone);
 		}
 	};
 
@@ -42,11 +42,11 @@ export default function ModalUserInfo({ visibility, setVisibility }) {
 								style={styles.avatar}
 							/>
 							<Text style={styles.name} medium>
-								Timur Kayumov
+								{user?.user_name}
 							</Text>
 							<Text style={styles.subtitle}>Haydovchi oldi</Text>
 							<Text medium style={styles.phone}>
-								+998 93 529 49 52
+								+{user?.user_phone}
 							</Text>
 							<Button
 								onPress={_OpenPhone}

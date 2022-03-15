@@ -32,8 +32,10 @@ export default function SelectTripOptions({ navigation }) {
 				options?.from &&
 				options?.seats?.length
 			) {
-				let date = options?.selectedDate?.toLocaleDateString();
-				let time = options?.selectedTime?.toLocaleTimeString();
+				// let date = options?.selectedDate?.toLocaleDateString();
+				let date = moment(options?.selectedDate).format("YYYY-MM-DD");
+				let time = moment(options?.selectedTime).format("hh:mm:ss a");
+
 				let mainTime = moment(
 					moment(`${date} ${time}`, `YYYY-MM-DD HH:mm:ss a`)
 				).toLocaleString();
@@ -61,6 +63,8 @@ export default function SelectTripOptions({ navigation }) {
 						data: trip.data,
 					});
 				}
+
+				console.log(trip);
 			}
 		} catch (error) {
 			console.log(error);

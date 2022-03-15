@@ -1,13 +1,19 @@
 import React from "react";
-import { View, StyleSheet, Image } from "react-native";
-import { Button, Container, Input, Text } from "../components/styledComponents";
+import { View, StyleSheet, Image, Pressable, TextInput } from "react-native";
+import {
+	Button,
+	Container,
+	defaultStyles,
+	Input,
+	Text,
+} from "../components/styledComponents";
 import * as ImagePicker from "expo-image-picker";
 import { useOptions } from "../contexts/OptionsContext";
 import CarsService from "../api/CarsService";
 
 export default function SubmitIdScreen({ navigation }) {
 	const [photoOfFrontOfId, setPhotoOfFrontOfId] = React.useState();
-	const [photoOfBackOfId, setPhotoOfBackOfId] = React.useState();
+	const [carNumber, setCarNumber] = React.useState("");
 	const [options, setOptions] = useOptions();
 
 	const pickFrontOfId = async () => {
@@ -30,14 +36,10 @@ export default function SubmitIdScreen({ navigation }) {
 
 	React.useEffect(() => {
 		(async () => {
-			let data = await CarsService.getCars(options.token);
-			if (data?.data?.cars?.rows[0]?.car_brand_id) {
-				setOptions({
-					...options,
-					brand_id: data?.data?.cars?.rows[0]?.car_id,
-					brand_color: "#000000",
-				});
-			}
+			setOptions({
+				...options,
+				brand_color: "#000000",
+			});
 		})();
 	}, []);
 
@@ -94,10 +96,44 @@ export default function SubmitIdScreen({ navigation }) {
 				</Text>
 			</Button> */}
 
+			<View style={styles.carNumberView}>
+				<Text semiBold>Mashina raqami</Text>
+				<TextInput
+					placeholder="Mashina raqamini kiriting"
+					style={{
+						...defaultStyles.defaultInputStyles,
+						marginTop: 10,
+					}}
+					value={carNumber}
+					onChangeText={(e) => setCarNumber(e)}
+				/>
+			</View>
+
+			<Pressable
+				onPress={() => navigation.navigate("CarBrandsScreen")}
+				style={styles.carNumberView}
+			>
+				<Text semiBold>Mashina markasi</Text>
+				<Text
+					style={{
+						...defaultStyles.defaultInputStyles,
+						marginTop: 10,
+					}}
+				>
+					{options?.brand
+						? options?.brand?.car_name
+						: "Mashina markasini tanlang"}
+				</Text>
+			</Pressable>
+
 			<Button
-				disabled={!photoOfFrontOfId}
+				disabled={!photoOfFrontOfId || !carNumber}
 				onPress={() => {
-					if (photoOfFrontOfId) {
+					if (photoOfFrontOfId && carNumber) {
+						setOptions({
+							...options,
+							car_number: carNumber,
+						});
 						navigation.navigate("SubmitPhotoScreen");
 					}
 				}}
@@ -130,9 +166,21 @@ const styles = StyleSheet.create({
 		marginTop: 5,
 		color: "#73787D",
 	},
+	carNumberView: {
+		marginTop: 20,
+	},
 	submitButton: {
 		marginTop: "auto",
 		backgroundColor: "#771E99",
+	},
+	carColors: {
+		marginTop: 10,
+		flexDirection: "row",
+		justifyContent: "space-between",
+	},
+	carColor: {
+		width: "32%",
+		borderWidth: 1,
 	},
 	idPhoto: {
 		width: 46,

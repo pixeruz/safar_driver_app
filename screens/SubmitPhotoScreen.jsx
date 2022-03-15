@@ -40,9 +40,9 @@ export default function SubmitPhotoScreen({ navigation }) {
 				return;
 			}
 			let result = await AuthService.sendApplyToRegistration(
-				options?.brand_id,
-				options?.brand_color,
-				"31A123AA",
+				options?.brand?.car_id,
+				"#ffffff",
+				options?.car_number,
 				options?.licence,
 				options.car_photo,
 				options.token

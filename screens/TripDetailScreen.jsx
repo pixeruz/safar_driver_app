@@ -105,7 +105,9 @@ export default function TripDetailScreen({ navigation, route }) {
 						Bronlagan yo’lovchilar
 					</Text>
 				</View>
-				<Bookers />
+				<Bookers
+					data={data?.car_seats_statuses.filter((e) => e.order_seat)}
+				/>
 			</ScrollView>
 		</Container>
 	);

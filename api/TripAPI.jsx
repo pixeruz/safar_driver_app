@@ -1,3 +1,6 @@
+import { useNavigation } from "@react-navigation/native";
+import { useOptions } from "../contexts/OptionsContext";
+
 const SERVER_URL = "https://safar.pixer.uz";
 
 export default class TripService {
@@ -10,6 +13,7 @@ export default class TripService {
 			},
 		});
 		response = await response.json();
+
 		return response;
 	}
 
@@ -46,6 +50,7 @@ export default class TripService {
 			});
 
 			response = await response.json();
+
 			return response;
 		} catch (error) {
 			console.log(error);
@@ -66,6 +71,9 @@ export default class TripService {
 			);
 
 			response = await response.json();
+			if (response && !response?.ok && response.code == 403)
+				this.logout();
+
 			return response;
 		} catch (error) {
 			console.log(error);
@@ -92,6 +100,9 @@ export default class TripService {
 			);
 
 			response = await response.json();
+			if (response && !response?.ok && response.code == 403)
+				this.logout();
+
 			return response;
 		} catch (error) {
 			console.log(error);
@@ -106,7 +117,10 @@ export default class TripService {
 				Authorization: token,
 			},
 		});
+
 		response = await response.json();
+		if (response && !response?.ok && response.code == 403) this.logout();
+
 		return response;
 	}
 }

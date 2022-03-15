@@ -1,7 +1,8 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
 import AuthService from "../api/AuthAPI";
 import { Button, Container, Input, Text } from "../components/styledComponents";
+import { useOptions } from "../contexts/OptionsContext";
 import Logo from "../images/Logo";
 import { storeDataToAsyncStorage } from "../services/asyncStorage";
 import { saveToSecureStorage } from "../services/secureStore";
@@ -11,6 +12,7 @@ export default function OTPScreen({ route, navigation }) {
 	const codeRef = React.useRef(null);
 	const [codeValue, setCodeValue] = React.useState("");
 	const [loading, setLoading] = React.useState(false);
+	const [options, setOptions] = useOptions();
 
 	React.useEffect(() => {
 		if (!id) {
@@ -41,8 +43,18 @@ export default function OTPScreen({ route, navigation }) {
 			if (!snapshotData?.ok) {
 				return;
 			} else {
+				if (
+					snapshotData?.data?.user?.driver &&
+					!snapshotData?.data?.user?.driver?.is_confirmed
+				) {
+					navigation.replace("WaitStatusScreen");
+					return;
+				}
 				await saveToSecureStorage("token", snapshotData.data.token);
-				if (!snapshotData.data.user.driver) {
+				setOptions({
+					token: snapshotData.data.token,
+				});
+				if (!snapshotData?.data?.user?.driver) {
 					await storeDataToAsyncStorage("driver", "not");
 					navigation.replace("RegistrationScreen", {
 						screen: "SubmitIdScreen",

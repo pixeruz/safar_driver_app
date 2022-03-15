@@ -16,3 +16,19 @@ export const getDataFromAsyncStorage = async (data) => {
 		// error reading value
 	}
 };
+
+export const removeDataFromAsyncStorage = async (data) => {
+	try {
+		await AsyncStorage.removeItem(data);
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+export const removeAllDataFromAsyncStorage = async (data) => {
+	try {
+		await AsyncStorage.clear();
+	} catch (error) {
+		console.log(error);
+	}
+};

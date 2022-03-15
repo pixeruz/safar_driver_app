@@ -7,15 +7,15 @@ import MainStackNavigator from "./navigations/MainStackNavigator";
 
 export default function App() {
 	return (
-		<OptionsProvider>
-			<PreventSplashScreen>
-				<NavigationContainer>
+		<NavigationContainer>
+			<OptionsProvider>
+				<PreventSplashScreen>
 					<SafeAreaView style={{ flex: 1 }}>
 						<StatusBar style="auto" />
 						<MainStackNavigator />
 					</SafeAreaView>
-				</NavigationContainer>
-			</PreventSplashScreen>
-		</OptionsProvider>
+				</PreventSplashScreen>
+			</OptionsProvider>
+		</NavigationContainer>
 	);
 }

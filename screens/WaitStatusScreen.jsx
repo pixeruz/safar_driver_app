@@ -7,8 +7,9 @@ import Logo from "../images/Logo";
 import { storeDataToAsyncStorage } from "../services/asyncStorage";
 
 export default function WaitStatusScreen({ navigation }) {
-	const [options] = useOptions();
+	const [options, setOptions] = useOptions();
 	const [loading, setLoading] = React.useState();
+	let _hascancel = false;
 	const check = async () => {
 		setLoading(true);
 		try {
@@ -22,14 +23,21 @@ export default function WaitStatusScreen({ navigation }) {
 		} catch (e) {
 			console.log("Error", e + "");
 		} finally {
-			setLoading(false);
+			if (!_hascancel) {
+				setLoading(false);
+			}
 		}
 	};
 
 	React.useEffect(() => {
-		check();
+		let timer = setTimeout(() => {
+			check();
+		}, 5000);
 
-		return () => {};
+		return () => {
+			_hascancel = true;
+			clearTimeout(timer);
+		};
 	}, []);
 
 	return (

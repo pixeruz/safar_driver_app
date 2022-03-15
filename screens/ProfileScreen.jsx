@@ -23,6 +23,7 @@ export default function ProfileScreen({ navigation }) {
 	async function loadData() {
 		try {
 			let user = await UsersService.getProfile(options?.token);
+			// console.log(user);
 			setData(user.data);
 		} catch (error) {}
 	}
@@ -56,7 +57,7 @@ export default function ProfileScreen({ navigation }) {
 						fontSize: 26,
 					}}
 				>
-					{data?.user?.user_balance
+					{data?.user?.user_balance || data?.user?.user_balance == 0
 						? data?.user?.user_balance + " so’m"
 						: "Yuklanmoqda"}
 				</Text>
@@ -82,14 +83,22 @@ export default function ProfileScreen({ navigation }) {
 						Hisobni to'ldirish
 					</Text>
 				</Button>
-				<Button style={styles.helpButton}>
+				<Button
+					onPress={() => {
+						setOptions({
+							...options,
+							logout: true,
+						});
+					}}
+					style={styles.helpButton}
+				>
 					<Text
 						style={{
 							color: "#771E99",
 						}}
 						bold
 					>
-						Yordam
+						Chiqish
 					</Text>
 				</Button>
 			</View>

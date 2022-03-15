@@ -19,8 +19,14 @@ const DATA = [
 	},
 ];
 
-const Item = ({ title, detail, setVisibility }) => (
-	<Pressable onPress={() => setVisibility(true)} style={styles.item}>
+const Item = ({ title, detail, setVisibility, setUser, user }) => (
+	<Pressable
+		onPress={() => {
+			setVisibility(true);
+			setUser(user);
+		}}
+		style={styles.item}
+	>
 		<Image
 			source={{
 				uri: "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
@@ -41,29 +47,36 @@ const Item = ({ title, detail, setVisibility }) => (
 	</Pressable>
 );
 
-export default function Bookers() {
+export default function Bookers({ data }) {
 	const [visibility, setVisibility] = React.useState(false);
+	const [user, setUser] = React.useState({});
 
 	return (
 		<View>
-			<Item
-				title="Timur Kayumov"
-				setVisibility={setVisibility}
-				detail={"Haydovchi oldi"}
-			/>
-			<Item
-				title="Amitabh Batchan"
-				setVisibility={setVisibility}
-				detail={"Orqa chap o’rindiq"}
-			/>
-			<Item
-				title="Alex Pushkin"
-				setVisibility={setVisibility}
-				detail={"Orqa o’rta o’rindiq"}
-			/>
+			{data.map((e, i) => {
+				return (
+					<Item
+						key={i}
+						title={e?.order_seat?.user?.user_name}
+						setVisibility={setVisibility}
+						user={e?.order_seat?.user}
+						setUser={setUser}
+						detail={
+							e?.index == 1
+								? "Haydovchi oldi"
+								: seat.index == 2
+								? "Orqa o'ng taraf"
+								: seat.index == 3
+								? "Orqa o'rta"
+								: "Orqa chap taraf"
+						}
+					/>
+				);
+			})}
 			<ModalUserInfo
 				visibility={visibility}
 				setVisibility={setVisibility}
+				user={user}
 			/>
 		</View>
 	);

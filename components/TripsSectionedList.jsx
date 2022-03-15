@@ -70,7 +70,7 @@ const Item = ({ item, navigation }) => {
 };
 
 export default function TripsSectionedList({ navigation }) {
-	const [options] = useOptions();
+	const [options, setOptions] = useOptions();
 	const [trips, setTrips] = React.useState([]);
 	const [refreshing, setRefreshing] = React.useState(false);
 	const [loading, setLoading] = React.useState(false);
@@ -99,6 +99,11 @@ export default function TripsSectionedList({ navigation }) {
 					}
 					setTrips(a);
 				}
+			} else if (data?.code == 403) {
+				setOptions({
+					...options,
+					logout: true,
+				});
 			}
 		} catch (error) {
 		} finally {
