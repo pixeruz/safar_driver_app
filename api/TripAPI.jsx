@@ -99,11 +99,13 @@ export default class TripService {
 				}
 			);
 
-			response = await response.json();
-			if (response && !response?.ok && response.code == 403)
-				this.logout();
+			console.log(response);
 
-			return response;
+			// response = await response.json();
+			// if (response && !response?.ok && response.code == 403)
+			// 	this.logout();
+
+			// return response;
 		} catch (error) {
 			console.log(error);
 		}

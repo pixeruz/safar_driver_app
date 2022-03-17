@@ -64,9 +64,9 @@ export default function Bookers({ data }) {
 						detail={
 							e?.index == 1
 								? "Haydovchi oldi"
-								: seat.index == 2
+								: e.index == 2
 								? "Orqa o'ng taraf"
-								: seat.index == 3
+								: e.index == 3
 								? "Orqa o'rta"
 								: "Orqa chap taraf"
 						}

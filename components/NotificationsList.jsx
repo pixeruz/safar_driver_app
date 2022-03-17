@@ -31,6 +31,7 @@ const Item = ({ item, navigation, trips, setTrips, index }) => {
 	const submit = async (status) => {
 		setLoading(true);
 		try {
+			console.log("boshlandi");
 			let data = await TripService.submitTripRequest(
 				options?.token,
 				item.ordered_seat_id,
@@ -42,9 +43,9 @@ const Item = ({ item, navigation, trips, setTrips, index }) => {
 				trips.splice(index, 1);
 				setTrips([...trips]);
 			}
+			setLoading(false);
 		} catch (error) {
 			console.log(error);
-		} finally {
 			setLoading(false);
 		}
 	};
@@ -146,6 +147,7 @@ export default function NotificationsList({ navigation }) {
 				setTrips(requests.data.seats.rows);
 			}
 		} catch (error) {
+			console.log(error);
 		} finally {
 			setRefreshing(false);
 		}
