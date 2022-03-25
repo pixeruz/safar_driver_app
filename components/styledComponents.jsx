@@ -7,6 +7,7 @@ import {
 	TextInput,
 	ScrollView,
 } from "react-native";
+import { useNetInfo } from "@react-native-community/netinfo";
 
 export function Text({ ...props }) {
 	return (
@@ -64,6 +65,11 @@ export function Container({ scroll, ...props }) {
 }
 
 export function Button({ ...props }) {
+	const netInfo = useNetInfo();
+
+	!netInfo.isConnected ? (props.disabled = true) : props.disabled;
+	console.log(props);
+
 	return (
 		<Pressable
 			{...props}
