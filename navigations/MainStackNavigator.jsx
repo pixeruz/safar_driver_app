@@ -31,10 +31,11 @@ function MainStackNavigator() {
 				gestureDirection: "horizontal",
 			}}
 			initialRouteName={
-				options?.token && options?.driver && options?.driver !== "not"
+				(options?.token &&
+					options?.driver &&
+					options?.driver !== "not") ||
+				options?.driver == "not"
 					? "TabBarNavigator"
-					: options?.driver == "not"
-					? "WaitStatusScreen"
 					: options?.token &&
 					  (!options?.driver || options?.driver !== "confirmed")
 					? "RegistrationScreen"

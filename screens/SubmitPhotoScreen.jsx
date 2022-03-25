@@ -56,7 +56,8 @@ export default function SubmitPhotoScreen({ navigation }) {
 				setOptions({
 					...options,
 				});
-				navigation.navigate("WaitStatusScreen");
+				// navigation.navigate("WaitStatusScreen");
+				navigation.navigate("TabBarNavigator");
 			} else if (result?.message?.startsWith("#is_confirmed:true")) {
 				await storeDataToAsyncStorage("driver", "confirmed");
 

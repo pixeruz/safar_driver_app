@@ -39,11 +39,12 @@ const Item = ({ item, navigation, trips, setTrips, index }) => {
 				item.tripper_id
 			);
 			console.log(data);
+
+			setLoading(false);
 			if (data.ok) {
 				trips.splice(index, 1);
 				setTrips([...trips]);
 			}
-			setLoading(false);
 		} catch (error) {
 			console.log(error);
 			setLoading(false);
@@ -228,6 +229,7 @@ const styles = StyleSheet.create({
 	informations: {
 		paddingLeft: 16,
 		width: "87%",
+		overflow: "hidden",
 	},
 	redbutton: {
 		width: "49%",
@@ -266,6 +268,7 @@ const styles = StyleSheet.create({
 	},
 	cityWrapper: {
 		flexDirection: "row",
+		width: "100%",
 		alignItems: "center",
 	},
 	optionsWrapper: {

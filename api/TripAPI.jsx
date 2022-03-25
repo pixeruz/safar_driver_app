@@ -81,6 +81,7 @@ export default class TripService {
 	}
 
 	static async submitTripRequest(token, seat_id, status, tripper) {
+		console.log(token, seat_id, status, tripper);
 		try {
 			let response = await fetch(
 				// localhost:5771/api/trips/accept/:seat_id
@@ -99,15 +100,13 @@ export default class TripService {
 				}
 			);
 
-			console.log(response);
+			// console.log(response);
 
-			// response = await response.json();
-			// if (response && !response?.ok && response.code == 403)
-			// 	this.logout();
+			response = await response.json();
 
-			// return response;
+			return response;
 		} catch (error) {
-			console.log(error);
+			console.log("request", error + "");
 		}
 	}
 

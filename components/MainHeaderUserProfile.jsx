@@ -19,6 +19,7 @@ export default function MainHeaderUserProfile() {
 							?.photo_id +
 						"." +
 						user?.data?.car?.car_images_albums[0].car_image?.type,
+					confirmed: user?.data?.driver?.is_confirmed,
 				});
 			}
 		} catch (error) {}

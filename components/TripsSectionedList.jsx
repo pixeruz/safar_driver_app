@@ -41,12 +41,13 @@ const Item = ({ item, navigation }) => {
 					<Text medium style={styles.optionsName}>
 						Bo’sh joy:{" "}
 						<Text>
-							{
-								item.car_seats_statuses.filter(
-									(e) => e.status == "ACTIVE"
-								).length
-							}{" "}
-							ta
+							{item.car_seats_statuses.filter(
+								(e) => e.status == "ACTIVE"
+							).length
+								? item.car_seats_statuses.filter(
+										(e) => e.status == "ACTIVE"
+								  ).length + " ta"
+								: "To'la"}
 						</Text>
 					</Text>
 					<Text medium style={styles.optionsName}>
