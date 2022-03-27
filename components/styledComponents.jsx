@@ -68,7 +68,6 @@ export function Button({ ...props }) {
 	const netInfo = useNetInfo();
 
 	!netInfo.isConnected ? (props.disabled = true) : props.disabled;
-	console.log(props);
 
 	return (
 		<Pressable

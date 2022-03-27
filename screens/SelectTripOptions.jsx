@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Pressable } from "react-native";
+import { View, StyleSheet, Pressable, Alert } from "react-native";
 import { Button, Container, Input, Text } from "../components/styledComponents";
 import { useOptions } from "../contexts/OptionsContext";
 import moment from "moment";
@@ -64,10 +64,16 @@ export default function SelectTripOptions({ navigation }) {
 					});
 				}
 
-				console.log(trip);
+				if (!trip?.ok) {
+					let error =
+						trip.message == "You were banned!"
+							? "Siz bloklangansiz, to'liqroq ma'lumot olish uchun bizga qo'ng'iroq qiling."
+							: trip.message;
+					Alert.alert("Xatolik yuz berdi", error + "");
+				}
 			}
 		} catch (error) {
-			console.log(error);
+			Alert.alert("Xatolik yuz berdi", error + "");
 		} finally {
 			setLoading(false);
 		}
@@ -88,7 +94,7 @@ export default function SelectTripOptions({ navigation }) {
 			<OneOptionRow title="Konditsioner" data={air} setData={setAir} />
 
 			<Button
-				// disabled={loading}
+				disabled={loading}
 				onPress={() => submit()}
 				style={styles.signUpButton}
 			>
