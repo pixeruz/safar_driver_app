@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useOptions } from "../contexts/OptionsContext";
 
 const SERVER_URL = "https://safar.pixer.uz";
+// const SERVER_URL = "http://localhost:5771";
 
 export default class TripService {
 	static async getTrips(token) {

@@ -177,7 +177,7 @@ export default function AddTripProperties({ navigation }) {
 				onConfirm={handleConfirmDate}
 				onCancel={hideDatePicker}
 				minimumDate={new Date()}
-				display="spinner"
+				renderToHardwareTextureAndroid
 			/>
 
 			<DateTimePickerModal

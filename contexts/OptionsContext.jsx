@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
+import { Platform } from "react-native";
 import { removeAllDataFromAsyncStorage } from "../services/asyncStorage";
 import { removeValueFromSecureStore } from "../services/secureStore";
 
@@ -14,7 +15,9 @@ export function OptionsProvider({ children }) {
 			setOptions({});
 
 			removeAllDataFromAsyncStorage();
-			removeValueFromSecureStore("token");
+			if (Platform.OS !== "web") {
+				removeValueFromSecureStore("token");
+			}
 
 			navigation.reset({
 				index: 0,

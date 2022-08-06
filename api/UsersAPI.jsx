@@ -1,4 +1,5 @@
 const SERVER_URL = "https://safar.pixer.uz";
+// const SERVER_URL = "http://localhost:5771";
 
 export default class UsersService {
 	static async getProfile(token) {

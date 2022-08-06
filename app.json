@@ -1,38 +1,49 @@
 {
-  "expo": {
-    "name": "safar_driver_app",
-    "slug": "safar_driver_app",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "jsEngine": "hermes",
-    "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#771E99"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      },
-      "package": "com.muhammadyunusuz.safar_driver_app"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      "expo-image-picker"
-    ],
-    "userInterfaceStyle": "automatic"
-  }
+	"expo": {
+		"name": "safar_driver_app",
+		"slug": "safar_driver_app",
+		"version": "1.1.0",
+		"orientation": "portrait",
+		"jsEngine": "hermes",
+		"icon": "./images/ios_icon.png",
+		"splash": {
+			"image": "./assets/splash.png",
+			"resizeMode": "contain",
+			"backgroundColor": "#771E99"
+		},
+		"updates": {
+			"fallbackToCacheTimeout": 0
+		},
+		"assetBundlePatterns": ["**/*"],
+		"ios": {
+			"supportsTablet": true,
+			"infoPlist": {
+				"NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos",
+				"NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access your camera",
+				"NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to access your microphone"
+			},
+			"bundleIdentifier": "uz.safar.driver",
+			"icon": "./images/ios_icon.png"
+		},
+		"android": {
+			"permissions": [
+				"RECORD_AUDIO",
+				"CAMERA",
+				"android.permission.CAMERA",
+				"android.permission.READ_EXTERNAL_STORAGE",
+				"android.permission.WRITE_EXTERNAL_STORAGE",
+				"android.permission.RECORD_AUDIO"
+			],
+			"adaptiveIcon": {
+				"foregroundImage": "./assets/adaptive-icon.png",
+				"backgroundColor": "#FFFFFF"
+			},
+			"package": "com.muhammadyunusuz.safar_driver_app"
+		},
+		"web": {
+			"favicon": "./assets/favicon.png"
+		},
+		"plugins": ["expo-image-picker"],
+		"userInterfaceStyle": "automatic"
+	}
 }

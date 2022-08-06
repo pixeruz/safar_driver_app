@@ -1,11 +1,12 @@
 import React from "react";
-import { View, StyleSheet, Alert } from "react-native";
+import { View, StyleSheet, Alert, Platform } from "react-native";
 import AuthService from "../api/AuthAPI";
 import { Button, Container, Input, Text } from "../components/styledComponents";
 import { useOptions } from "../contexts/OptionsContext";
 import Logo from "../images/Logo";
 import { storeDataToAsyncStorage } from "../services/asyncStorage";
 import { saveToSecureStorage } from "../services/secureStore";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function OTPScreen({ route, navigation }) {
 	const { id } = route.params;
@@ -50,17 +51,32 @@ export default function OTPScreen({ route, navigation }) {
 					navigation.replace("WaitStatusScreen");
 					return;
 				}
-				await saveToSecureStorage("token", snapshotData.data.token);
+				if (Platform.OS === "web") {
+					await AsyncStorage.setItem(
+						"token",
+						snapshotData.data.token
+					);
+				} else {
+					await saveToSecureStorage("token", snapshotData.data.token);
+				}
 				setOptions({
 					token: snapshotData.data.token,
 				});
 				if (!snapshotData?.data?.user?.driver) {
-					await storeDataToAsyncStorage("driver", "not");
+					if (Platform.OS === "web") {
+						await AsyncStorage.setItem("driver", "not");
+					} else {
+						await saveToSecureStorage("driver", "not");
+					}
 					navigation.replace("RegistrationScreen", {
 						screen: "SubmitIdScreen",
 					});
 				} else {
-					await storeDataToAsyncStorage("driver", "confirmed");
+					if (Platform.OS === "web") {
+						await AsyncStorage.setItem("driver", "confirmed");
+					} else {
+						await saveToSecureStorage("driver", "confirmed");
+					}
 					navigation.reset({
 						index: 0,
 						routes: [{ name: "TabBarNavigator" }],
@@ -68,7 +84,7 @@ export default function OTPScreen({ route, navigation }) {
 				}
 			}
 		} catch (error) {
-			console.warn(error);
+			alert(JSON.stringify(error));
 		} finally {
 			setLoading(false);
 		}

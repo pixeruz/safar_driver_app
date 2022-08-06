@@ -8,6 +8,7 @@ import {
 } from "../services/secureStore";
 import { useOptions } from "../contexts/OptionsContext";
 import { getDataFromAsyncStorage } from "../services/asyncStorage";
+import { Platform } from "react-native";
 
 export default function PreventSplashScreen({ children }) {
 	const [isLoaded, setLoaded] = React.useState(false);
@@ -26,7 +27,14 @@ export default function PreventSplashScreen({ children }) {
 			"Inter-Thin": require("../fonts/Inter-Thin.ttf"),
 		});
 
-		const token = await getValueForFromSecureStore("token");
+		let token;
+
+		if (Platform.OS == "web") {
+			token = await getDataFromAsyncStorage("token");
+		} else {
+			token = await getValueForFromSecureStore("token");
+		}
+
 		const driver = await getDataFromAsyncStorage("driver");
 
 		setOptions({
