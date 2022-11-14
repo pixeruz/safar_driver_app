@@ -36,35 +36,32 @@ function MainStackNavigator() {
 					options?.driver !== "not") ||
 				options?.driver == "not"
 					? "TabBarNavigator"
-					: options?.token &&
-					  (!options?.driver || options?.driver !== "confirmed")
-					? "RegistrationScreen"
 					: "LoginScreen"
 			}
 		>
 			<Stack.Screen
-				name="OnBoardingScreen"
+				name='OnBoardingScreen'
 				options={{
 					headerShown: false,
 				}}
 				component={Onboardingscreen}
 			/>
 			<Stack.Screen
-				name="LoginScreen"
+				name='LoginScreen'
 				options={{
 					headerShown: false,
 				}}
 				component={LoginScreen}
 			/>
 			<Stack.Screen
-				name="OTPScreen"
+				name='OTPScreen'
 				options={{
 					headerShown: false,
 				}}
 				component={OTPScreen}
 			/>
 			<Stack.Screen
-				name="RegistrationScreen"
+				name='RegistrationScreen'
 				options={{
 					headerShown: true,
 					header: MainStackNavigatorHeader,
@@ -73,7 +70,7 @@ function MainStackNavigator() {
 				component={CustomRegistrationNavigator}
 			/>
 			<Stack.Screen
-				name="AddTripScreen"
+				name='AddTripScreen'
 				options={{
 					headerShown: true,
 					header: MainStackNavigatorHeader,
@@ -82,7 +79,7 @@ function MainStackNavigator() {
 				component={CustomAddTripNavigator}
 			/>
 			<Stack.Screen
-				name="CitiesScreen"
+				name='CitiesScreen'
 				options={{
 					headerShown: true,
 					header: MainStackNavigatorHeader,
@@ -91,7 +88,7 @@ function MainStackNavigator() {
 				component={CitiesScreen}
 			/>
 			<Stack.Screen
-				name="CarBrandsScreen"
+				name='CarBrandsScreen'
 				options={{
 					headerShown: true,
 					header: MainStackNavigatorHeader,
@@ -100,28 +97,28 @@ function MainStackNavigator() {
 				component={CarBrandsScreen}
 			/>
 			<Stack.Screen
-				name="WaitStatusScreen"
+				name='WaitStatusScreen'
 				options={{
 					headerShown: false,
 				}}
 				component={WaitStatusScreen}
 			/>
 			<Stack.Screen
-				name="TabBarNavigator"
+				name='TabBarNavigator'
 				options={{
 					headerShown: false,
 				}}
 				component={MainBottomBarNavigator}
 			/>
 			<Stack.Screen
-				name="TripDetailScreen"
+				name='TripDetailScreen'
 				options={{
 					headerShown: false,
 				}}
 				component={TripDetailScreen}
 			/>
 			<Stack.Screen
-				name="SuccessfullyCreated"
+				name='SuccessfullyCreated'
 				options={{
 					headerShown: false,
 				}}

@@ -41,6 +41,8 @@ export default function OTPScreen({ route, navigation }) {
 
 			let snapshotData = await AuthService.checkCode(codeValue, id);
 
+			console.log(snapshotData);
+
 			if (!snapshotData?.ok) {
 				return;
 			} else {
@@ -112,7 +114,7 @@ export default function OTPScreen({ route, navigation }) {
 					keyboardType={"phone-pad"}
 					value={codeValue}
 					onChangeText={setCodeValue}
-					placeholder="Telefon raqam"
+					placeholder='Tasdiqlash kodi'
 					autoFocus
 				/>
 			</View>
