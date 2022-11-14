@@ -18,6 +18,8 @@ import _ from "lodash";
 moment.locale("uz-UZ");
 
 const Item = ({ item, navigation }) => {
+	const [options, setOptions] = useOptions();
+
 	return (
 		<Pressable
 			onPress={() =>
@@ -25,7 +27,19 @@ const Item = ({ item, navigation }) => {
 					data: item,
 				})
 			}
-			style={styles.item}
+			onLongPress={() =>
+				TripService.editTripStatus(
+					options?.token,
+					item.trip_id,
+					"finish"
+				)
+			}
+			style={{
+				...styles.item,
+				...(item.trip_status == "WAITING"
+					? styles.tripActive
+					: styles.tripFinished),
+			}}
 		>
 			<View>
 				<View style={styles.cityWrapper}>
@@ -63,9 +77,7 @@ const Item = ({ item, navigation }) => {
 						: styles.statusInactive
 				}
 				medium
-			>
-				{item.trip_status == "WAITING" ? "Aktiv" : "Tugagan"}
-			</Text>
+			></Text>
 		</Pressable>
 	);
 };
@@ -239,5 +251,9 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		paddingHorizontal: 20,
 		textAlign: "center",
+	},
+	tripActive: {
+		borderRightWidth: 10,
+		borderRightColor: "#6FCF97",
 	},
 });

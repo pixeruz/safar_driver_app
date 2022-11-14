@@ -5,8 +5,44 @@ import Pale from "../components/Pale";
 import { Button, Container, Text } from "../components/styledComponents";
 import TripsSectionedList from "../components/TripsSectionedList";
 import PlusIcon from "../images/Plus";
+import * as Notifications from "expo-notifications";
+import * as Device from "expo-device";
 
 export default function HomeScreen({ navigation }) {
+	const notificationListener = React.useRef();
+	const responseListener = React.useRef();
+	const [expoPushToken, setExpoPushToken] = React.useState("");
+	const [notification, setNotification] = React.useState(false);
+
+	React.useEffect(() => {
+		registerForPushNotificationsAsync().then((token) =>
+			setExpoPushToken(token)
+		);
+
+		// This listener is fired whenever a notification is received while the app is foregrounded
+		notificationListener.current =
+			Notifications.addNotificationReceivedListener((notification) => {
+				setNotification(notification);
+			});
+
+		// This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+		responseListener.current =
+			Notifications.addNotificationResponseReceivedListener(
+				(response) => {
+					console.log(response);
+				}
+			);
+
+		return () => {
+			Notifications.removeNotificationSubscription(
+				notificationListener.current
+			);
+			Notifications.removeNotificationSubscription(
+				responseListener.current
+			);
+		};
+	}, []);
+
 	return (
 		<Container style={styles.container}>
 			<MainHeaderUserProfile />
@@ -66,3 +102,35 @@ const styles = StyleSheet.create({
 		lineHeight: 24,
 	},
 });
+
+async function registerForPushNotificationsAsync() {
+	let token;
+	if (Device.isDevice) {
+		const { status: existingStatus } =
+			await Notifications.getPermissionsAsync();
+		let finalStatus = existingStatus;
+		if (existingStatus !== "granted") {
+			const { status } = await Notifications.requestPermissionsAsync();
+			finalStatus = status;
+		}
+		if (finalStatus !== "granted") {
+			alert("Failed to get push token for push notification!");
+			return;
+		}
+		token = (await Notifications.getExpoPushTokenAsync()).data;
+		console.log(token);
+	} else {
+		alert("Must use physical device for Push Notifications");
+	}
+
+	if (Platform.OS === "android") {
+		Notifications.setNotificationChannelAsync("default", {
+			name: "default",
+			importance: Notifications.AndroidImportance.MAX,
+			vibrationPattern: [0, 250, 250, 250],
+			lightColor: "#FF231F7C",
+		});
+	}
+
+	return token;
+}
