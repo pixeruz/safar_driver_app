@@ -12,7 +12,6 @@ import { Platform, View } from "react-native";
 export default function PreventSplashScreen({ children }) {
 	const [isLoaded, setLoaded] = React.useState(false);
 	const [options, setOptions] = useOptions();
-	const [appIsReady, setAppIsReady] = React.useState(false);
 
 	async function _cachedResources() {
 		await Font.loadAsync({
@@ -35,7 +34,13 @@ export default function PreventSplashScreen({ children }) {
 			token = await getValueForFromSecureStore("token");
 		}
 
-		const driver = await getDataFromAsyncStorage("driver");
+		let driver;
+
+		if (Platform.OS == "web") {
+			driver = await getDataFromAsyncStorage("driver");
+		} else {
+			driver = await getValueForFromSecureStore("driver");
+		}
 
 		setOptions({
 			...options,

@@ -68,7 +68,7 @@ export default function OTPScreen({ route, navigation }) {
 					} else {
 						await saveToSecureStorage("driver", "not");
 					}
-					navigation.replace("RegistrationScreen", {
+					return navigation.replace("RegistrationScreen", {
 						screen: "SubmitIdScreen",
 					});
 				} else {
@@ -77,7 +77,7 @@ export default function OTPScreen({ route, navigation }) {
 					} else {
 						await saveToSecureStorage("driver", "confirmed");
 					}
-					navigation.reset({
+					return navigation.reset({
 						index: 0,
 						routes: [{ name: "TabBarNavigator" }],
 					});
@@ -85,7 +85,6 @@ export default function OTPScreen({ route, navigation }) {
 			}
 		} catch (error) {
 			alert(JSON.stringify(error));
-		} finally {
 			setLoading(false);
 		}
 	}

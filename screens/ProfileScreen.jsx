@@ -15,6 +15,7 @@ import { Button, Container, Text } from "../components/styledComponents";
 import Pale from "../components/Pale";
 import UsersService from "../api/UsersAPI";
 import { useOptions } from "../contexts/OptionsContext";
+import UserNotifications from "../components/UserNotifications";
 
 export default function ProfileScreen({ navigation }) {
 	const [data, setData] = React.useState({});
@@ -44,12 +45,12 @@ export default function ProfileScreen({ navigation }) {
 					Profil
 				</Text>
 			</View>
+
 			<Pale />
 
-			<ProfileHeader data={data} navigation={navigation} />
-			<Pale />
+			<UserNotifications />
 
-			<View style={styles.titleWrapper}>
+			<View style={styles.titleWrapperDiv}>
 				<Text medium>Hisobingiz:</Text>
 				<Text
 					bold
@@ -141,11 +142,23 @@ const styles = StyleSheet.create({
 	},
 	addCashButton: {
 		backgroundColor: "#771E99",
-		marginTop: 30,
+		marginTop: 10,
 	},
 	helpButton: {
 		borderWidth: 2,
 		borderColor: "#771E99",
+	},
+	titleWrapperDiv: {
+		position: "absolute",
+		bottom: 1,
+		width: "100%",
+		paddingVertical: 20,
+		paddingHorizontal: 16,
+		borderTopColor: "#771E99",
+		borderTopWidth: 3,
+		borderTopLeftRadius: 5,
+		borderTopRightRadius: 5,
+		backgroundColor: "#ffffff",
 	},
 	titleWrapper: {
 		paddingVertical: 20,
