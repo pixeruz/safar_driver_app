@@ -7,15 +7,18 @@ import TripsSectionedList from "../components/TripsSectionedList";
 import PlusIcon from "../images/Plus";
 import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
+import UsersService from "../api/UsersAPI";
+import { useOptions } from "../contexts/OptionsContext";
 
 export default function HomeScreen({ navigation }) {
 	const notificationListener = React.useRef();
 	const responseListener = React.useRef();
 	const [expoPushToken, setExpoPushToken] = React.useState("");
 	const [notification, setNotification] = React.useState(false);
+	const [options] = useOptions();
 
 	React.useEffect(() => {
-		registerForPushNotificationsAsync().then((token) =>
+		registerForPushNotificationsAsync(options?.token).then((token) =>
 			setExpoPushToken(token)
 		);
 
@@ -103,7 +106,7 @@ const styles = StyleSheet.create({
 	},
 });
 
-async function registerForPushNotificationsAsync() {
+async function registerForPushNotificationsAsync(tokenAuth) {
 	let token;
 	if (Device.isDevice) {
 		const { status: existingStatus } =
@@ -118,7 +121,9 @@ async function registerForPushNotificationsAsync() {
 			return;
 		}
 		token = (await Notifications.getExpoPushTokenAsync()).data;
-		console.log(token);
+		if (token) {
+			UsersService.setToken(tokenAuth, token);
+		}
 	} else {
 		alert("Must use physical device for Push Notifications");
 	}

@@ -6,6 +6,7 @@ import {
 	Pressable,
 	RefreshControl,
 	ActivityIndicator,
+	Alert,
 } from "react-native";
 import React from "react";
 import { Text } from "./styledComponents";
@@ -28,10 +29,21 @@ const Item = ({ item, navigation }) => {
 				})
 			}
 			onLongPress={() =>
-				TripService.editTripStatus(
-					options?.token,
-					item.trip_id,
-					"finish"
+				Alert.alert(
+					"Tasdiqlash",
+					"Safarni tugatishingizni tasdiqlang.",
+					[
+						{ text: "Bekor qilish", onPress: () => {} },
+						{
+							text: "Tasdiqlash",
+							onPress: () =>
+								TripService.editTripStatus(
+									options?.token,
+									item.trip_id,
+									"finish"
+								),
+						},
+					]
 				)
 			}
 			style={{

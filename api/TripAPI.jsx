@@ -28,6 +28,7 @@ export default class TripService {
 		air,
 		baggage
 	) {
+		console.log(seats);
 		try {
 			let body = JSON.stringify({
 				leave_region_id,
@@ -82,7 +83,6 @@ export default class TripService {
 	}
 
 	static async submitTripRequest(token, seat_id, status, tripper) {
-		console.log(token, seat_id, status, tripper);
 		try {
 			let response = await fetch(
 				// localhost:5771/api/trips/accept/:seat_id

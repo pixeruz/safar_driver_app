@@ -7,38 +7,47 @@ import {
 	StatusBar,
 } from "react-native";
 import React from "react";
+import UsersService from "../api/UsersAPI";
+import { useOptions } from "../contexts/OptionsContext";
+import moment from "moment/moment";
+import "moment/locale/uz-latn";
 
-const DATA = [
-	{
-		id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-		title: "Balansingizga 20.000 so'm tushdi",
-	},
-	{
-		id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-		title: "Balansingizdan 2000 so'm safar to'lovi yechildi.",
-	},
-	{
-		id: "58694a0f-3da1-471f-bd96-145571e29d72",
-		title: "Safaringiz bekor qilindi.",
-	},
-];
-
-const Item = ({ title }) => (
+const Item = ({ message, createdAt }) => (
 	<View style={styles.item}>
-		<Text style={styles.title}>{title}</Text>
-		<Text style={styles.date}>2 soat avval</Text>
+		<Text style={styles.title}>{message}</Text>
+		<Text style={styles.date}>{moment(createdAt).toNow()}</Text>
 	</View>
 );
 
 export default function UserNotifications() {
-	const renderItem = ({ item }) => <Item title={item.title} />;
+	const renderItem = ({ item }) => {
+		return (
+			<Item
+				message={item.notification_message}
+				createdAt={item.createdAt}
+			/>
+		);
+	};
+
+	const [notifications, setNotifications] = React.useState([]);
+	const [options] = useOptions();
+
+	React.useEffect(() => {
+		UsersService.getNotifications(options?.token).then((data) => {
+			if (data?.notifications) {
+				setNotifications(data?.notifications);
+			}
+		});
+	}, []);
 
 	return (
 		<SafeAreaView style={styles.container}>
 			<FlatList
-				data={DATA}
+				refreshing
+				data={notifications}
 				renderItem={renderItem}
-				keyExtractor={(item) => item.id}
+				keyExtractor={(item) => item.notification_id}
+				contentContainerStyle={styles.flatList}
 			/>
 		</SafeAreaView>
 	);
@@ -47,6 +56,9 @@ export default function UserNotifications() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+	},
+	flatList: {
+		paddingBottom: 300,
 	},
 	item: {
 		padding: 16,
