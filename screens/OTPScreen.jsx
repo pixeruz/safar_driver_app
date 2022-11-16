@@ -21,8 +21,6 @@ export default function OTPScreen({ route, navigation }) {
 		}
 
 		setTimeout(() => codeRef?.current?.focus(), 1000);
-
-		return null;
 	}, []);
 
 	React.useEffect(() => {

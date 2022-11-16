@@ -8,9 +8,22 @@ import MainStackNavigator from "./navigations/MainStackNavigator";
 import { useNetInfo } from "@react-native-community/netinfo";
 import React from "react";
 import { Text } from "./components/styledComponents";
+import * as SplashScreen from "expo-splash-screen";
 
 export default function App() {
 	const netInfo = useNetInfo();
+
+	React.useEffect(() => {
+		async function prepare() {
+			try {
+				await SplashScreen.preventAutoHideAsync();
+			} catch (e) {
+				console.warn(e);
+			}
+		}
+
+		prepare();
+	}, []);
 
 	return (
 		<SafeAreaProvider>
@@ -18,7 +31,7 @@ export default function App() {
 				<OptionsProvider>
 					<PreventSplashScreen>
 						<SafeAreaView style={{ flex: 1 }}>
-							<StatusBar style="auto" />
+							<StatusBar style='auto' />
 							{!netInfo.isConnected && (
 								<View
 									style={{

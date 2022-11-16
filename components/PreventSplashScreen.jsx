@@ -1,18 +1,18 @@
 import React from "react";
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import AppLoading from "expo-app-loading";
 import {
 	getValueForFromSecureStore,
 	removeValueFromSecureStore,
 } from "../services/secureStore";
 import { useOptions } from "../contexts/OptionsContext";
 import { getDataFromAsyncStorage } from "../services/asyncStorage";
-import { Platform } from "react-native";
+import { Platform, View } from "react-native";
 
 export default function PreventSplashScreen({ children }) {
 	const [isLoaded, setLoaded] = React.useState(false);
 	const [options, setOptions] = useOptions();
+	const [appIsReady, setAppIsReady] = React.useState(false);
 
 	async function _cachedResources() {
 		await Font.loadAsync({
@@ -44,15 +44,27 @@ export default function PreventSplashScreen({ children }) {
 		});
 	}
 
-	if (isLoaded) {
-		return children;
-	} else {
-		return (
-			<AppLoading
-				startAsync={_cachedResources}
-				onFinish={() => setLoaded(true)}
-				onError={() => console.warn}
-			/>
-		);
+	React.useEffect(() => {
+		_cachedResources()
+			.catch((e) => console.log(e))
+			.finally(() => {
+				setLoaded(true);
+			});
+	}, []);
+
+	const onLayoutRootView = React.useCallback(async () => {
+		if (isLoaded) {
+			await SplashScreen.hideAsync();
+		}
+	}, [isLoaded]);
+
+	if (!isLoaded) {
+		return null;
 	}
+
+	return (
+		<View onLayout={onLayoutRootView} style={{ flex: 1 }}>
+			{children}
+		</View>
+	);
 }
