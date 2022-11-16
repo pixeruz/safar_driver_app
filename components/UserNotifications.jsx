@@ -38,6 +38,15 @@ export default function UserNotifications() {
 				setNotifications(data?.notifications);
 			}
 		});
+
+		let interval = setInterval(() => {
+			UsersService.getNotifications(options?.token).then((data) => {
+				if (data?.notifications) {
+					setNotifications(data?.notifications);
+				}
+			});
+		}, 5000);
+		return () => clearInterval(interval);
 	}, []);
 
 	return (

@@ -32,7 +32,14 @@ export default function HomeScreen({ navigation }) {
 		responseListener.current =
 			Notifications.addNotificationResponseReceivedListener(
 				(response) => {
-					console.log(response);
+					navigation.reset({
+						index: 0,
+						routes: [
+							{
+								name: "ProfileScreen",
+							},
+						],
+					});
 				}
 			);
 
@@ -122,7 +129,7 @@ async function registerForPushNotificationsAsync(tokenAuth) {
 		}
 		token = (await Notifications.getExpoPushTokenAsync()).data;
 		if (token) {
-			UsersService.setToken(tokenAuth, token);
+			UsersService.setToken(tokenAuth, token).then((x) => console.log(x));
 		}
 	} else {
 		alert("Must use physical device for Push Notifications");

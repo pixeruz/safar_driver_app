@@ -38,16 +38,19 @@ export default class UsersService {
 
 	static async setToken(token, pushToken) {
 		try {
-			let response = await fetch(SERVER_URL + `/api/users/set-token`, {
-				method: "PATCH",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: token,
-				},
-				body: JSON.stringify({
-					token: pushToken,
-				}),
-			});
+			let response = await fetch(
+				SERVER_URL + `/api/users/profile/push-token`,
+				{
+					method: "PATCH",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: token,
+					},
+					body: JSON.stringify({
+						token: pushToken,
+					}),
+				}
+			);
 
 			response = await response.json();
 			return response;
